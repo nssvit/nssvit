@@ -32,3 +32,28 @@ npm run dev
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+## Contributors
+
+### NSS VIT Website v.2024
+
+<table>
+    <tr>
+        <td align="center">
+            <a href="https://github.com/adarshnambiar12">
+                <img src="https://github.com/adarshnambiar12.png" width="100px;" alt="Adarsh Nambiar" style="border-radius: 50%;"/>
+                <br />
+                <sub><b>Adarsh Nambiar</b></sub>
+            </a>
+        </td>
+        <td align="center">
+            <a href="https://github.com/nishashetty1">
+                <img src="https://github.com/nishashetty1.png" width="100px;" alt="Nisha Shetty" style="border-radius: 50%;"/>
+                <br />
+                <sub><b>Nisha Shetty</b></sub>
+            </a>
+        </td>
+    </tr>
+</table>
+
+## 
+## 
