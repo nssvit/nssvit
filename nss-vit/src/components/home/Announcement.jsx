@@ -128,7 +128,7 @@ const AnnouncementSection = () => {
 
                     <div className="flex justify-center mt-8">
                         <a
-                            href="achievements"
+                            href="./achievements"
                             className="inline-flex items-center px-6 py-3 bg-gradient-button hover:bg-gradient-button-hover text-white font-medium rounded-full shadow-medium hover:shadow-strong transition-all duration-300 hover:animate-button-pop"
                         >
                             <span>View All Achievements</span>
