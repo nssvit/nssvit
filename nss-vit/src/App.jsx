@@ -2,6 +2,7 @@ import React,{useEffect} from 'react'
 import { Outlet } from 'react-router-dom'
 import { Navbar, Footer } from './components'
 import { useLocation } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 
 const App = () => {
 
@@ -35,6 +36,7 @@ const App = () => {
       <Navbar />
       <Outlet />
       <Footer />
+      <Analytics />
     </>
   )
 }
