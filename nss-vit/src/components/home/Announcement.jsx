@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 
 const AnnouncementSection = () => {
     return (
@@ -127,8 +128,8 @@ const AnnouncementSection = () => {
                     </p>
 
                     <div className="flex justify-center mt-8">
-                        <a
-                            href="/achievements"
+                        <Link
+                            to="/achievements"
                             className="inline-flex items-center px-6 py-3 bg-gradient-button hover:bg-gradient-button-hover text-white font-medium rounded-full shadow-medium hover:shadow-strong transition-all duration-300 hover:animate-button-pop"
                         >
                             <span>View All Achievements</span>
@@ -141,7 +142,7 @@ const AnnouncementSection = () => {
                             >
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                             </svg>
-                        </a>
+                        </Link>
                     </div>
                 </div>
 
