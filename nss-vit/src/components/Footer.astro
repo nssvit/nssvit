@@ -1,0 +1,119 @@
+---
+import { FaLinkedin, FaInstagram, FaEnvelope, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
+---
+
+<footer id="contact" class="bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 text-white">
+  <div class="container-custom py-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+      <!-- About Section -->
+      <div class="space-y-4">
+        <div class="flex items-center space-x-3">
+          <img
+            src="https://res.cloudinary.com/du6zyqqyw/image/upload/f_auto,q_auto/v1740557668/img/nss-logo.png"
+            alt="NSS VIT Logo"
+            class="h-12 w-12"
+          />
+          <div>
+            <h3 class="text-xl font-display font-bold">NSS VIT</h3>
+            <p class="text-sm text-gray-300">Not Me But You</p>
+          </div>
+        </div>
+        <p class="text-gray-300 text-sm leading-relaxed">
+          The National Service Scheme at VIT aims to develop student personalities through community service and social initiatives.
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h4 class="text-lg font-semibold mb-4 border-b border-gray-700 pb-2">Quick Links</h4>
+        <ul class="space-y-2">
+          <li><a href="/" class="text-gray-300 hover:text-white transition-colors hover:translate-x-1 inline-block">Home</a></li>
+          <li><a href="/team" class="text-gray-300 hover:text-white transition-colors hover:translate-x-1 inline-block">Our Team</a></li>
+          <li><a href="/events" class="text-gray-300 hover:text-white transition-colors hover:translate-x-1 inline-block">Events</a></li>
+          <li><a href="/camp" class="text-gray-300 hover:text-white transition-colors hover:translate-x-1 inline-block">Special Camp</a></li>
+          <li><a href="/achievements" class="text-gray-300 hover:text-white transition-colors hover:translate-x-1 inline-block">Achievements</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div>
+        <h4 class="text-lg font-semibold mb-4 border-b border-gray-700 pb-2">Contact Us</h4>
+        <ul class="space-y-3">
+          <li class="flex items-start space-x-3">
+            <FaMapMarkerAlt className="text-primary-400 mt-1 flex-shrink-0" client:load />
+            <span class="text-gray-300 text-sm">
+              Vidyalankar Institute of Technology,<br />
+              Wadala East, Mumbai - 400037
+            </span>
+          </li>
+          <li class="flex items-center space-x-3">
+            <FaPhone className="text-primary-400 flex-shrink-0" client:load />
+            <a href="tel:+912240015100" class="text-gray-300 hover:text-white transition-colors text-sm">
+              +91 22 4001 5100
+            </a>
+          </li>
+          <li class="flex items-center space-x-3">
+            <FaEnvelope className="text-primary-400 flex-shrink-0" client:load />
+            <a href="mailto:nss@vit.edu.in" class="text-gray-300 hover:text-white transition-colors text-sm">
+              nss@vit.edu.in
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Social Media -->
+      <div>
+        <h4 class="text-lg font-semibold mb-4 border-b border-gray-700 pb-2">Follow Us</h4>
+        <p class="text-gray-300 text-sm mb-4">
+          Stay connected with us on social media for updates and events.
+        </p>
+        <div class="flex space-x-4">
+          <a
+            href="https://www.linkedin.com/company/nss-vit"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="bg-blue-600 hover:bg-blue-700 p-3 rounded-full transition-all duration-300 transform hover:scale-110 hover:shadow-lg"
+            aria-label="LinkedIn"
+          >
+            <FaLinkedin className="text-white text-xl" client:load />
+          </a>
+          <a
+            href="https://www.instagram.com/nss.vit"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="bg-gradient-to-br from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 p-3 rounded-full transition-all duration-300 transform hover:scale-110 hover:shadow-lg"
+            aria-label="Instagram"
+          >
+            <FaInstagram className="text-white text-xl" client:load />
+          </a>
+          <a
+            href="mailto:nss@vit.edu.in"
+            class="bg-red-600 hover:bg-red-700 p-3 rounded-full transition-all duration-300 transform hover:scale-110 hover:shadow-lg"
+            aria-label="Email"
+          >
+            <FaEnvelope className="text-white text-xl" client:load />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="mt-12 pt-8 border-t border-gray-700">
+      <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+        <p class="text-gray-400 text-sm text-center md:text-left">
+          &copy; {new Date().getFullYear()} NSS VIT. All rights reserved.
+        </p>
+        <p class="text-gray-400 text-sm">
+          Made with <span class="text-red-500">❤</span> by NSS VIT Team
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Disable right-click
+  document.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+  });
+</script>

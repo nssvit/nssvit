@@ -1,0 +1,163 @@
+[
+  {
+    "id": "prof-rakshak-sood",
+    "name": "Prof. Rakshak Sood",
+    "position": "Program Officer",
+    "img": "https://res.cloudinary.com/du6zyqqyw/image/upload/f_auto,q_auto/v1740560606/img/2024-2025/team/rakshaksood.jpg",
+    "linkedin": "https://www.linkedin.com/in/rakshak-sood-2491a4101/",
+    "email": "rakshak.sood@vit.edu.in",
+    "order": 1
+  },
+  {
+    "id": "prof-rohit-barve",
+    "name": "Prof. Rohit Barve",
+    "position": "Faculty Advisor",
+    "img": "https://res.cloudinary.com/du6zyqqyw/image/upload/f_auto,q_auto/v1740560606/img/2024-2025/team/rohitbarve.jpg",
+    "linkedin": "https://www.linkedin.com/in/rohit-barve/",
+    "email": "rohit.barve@vit.edu.in",
+    "order": 2
+  },
+  {
+    "id": "prof-aarti-koduri",
+    "name": "Prof. Aarti Koduri",
+    "position": "Faculty Advisor",
+    "img": "https://res.cloudinary.com/du6zyqqyw/image/upload/f_auto,q_auto/v1740560606/img/2024-2025/team/aartikoduri.jpg",
+    "linkedin": "https://www.linkedin.com/in/aarti-koduri-07455b2bb/",
+    "email": "aarti.koduri@vit.edu.in",
+    "order": 3
+  },
+  {
+    "id": "anushka-more",
+    "name": "Anushka More",
+    "position": "In-Charge",
+    "img": "https://res.cloudinary.com/du6zyqqyw/image/upload/f_auto,q_auto/v1740560606/img/2024-2025/team/anushkamore.jpg",
+    "email": "anushka.more@vit.edu.in",
+    "order": 4
+  },
+  {
+    "id": "deepak-gavhane",
+    "name": "Deepak Gavhane",
+    "position": "In-Charge",
+    "img": "https://res.cloudinary.com/du6zyqqyw/image/upload/f_auto,q_auto/v1740560606/img/2024-2025/team/deepakgavhane.jpg",
+    "linkedin": "https://www.linkedin.com/in/deepakgavhane/",
+    "email": "deepak.gavhane@vit.edu.in",
+    "order": 5
+  },
+  {
+    "id": "mannan-naidu",
+    "name": "Mannan Naidu",
+    "position": "Documentation Lead",
+    "img": "https://res.cloudinary.com/du6zyqqyw/image/upload/f_auto,q_auto/v1740560606/img/2024-2025/team/mannannaidu.jpg",
+    "linkedin": "https://www.linkedin.com/in/mannan-naidu-336b4228b/",
+    "email": "mannan.naidu@vit.edu.in",
+    "order": 6
+  },
+  {
+    "id": "adarsh-nambiar",
+    "name": "Adarsh Nambiar",
+    "position": "Documentation Lead",
+    "img": "https://res.cloudinary.com/du6zyqqyw/image/upload/f_auto,q_auto/v1740560606/img/2024-2025/team/adarshnambiar.jpg",
+    "linkedin": "https://www.linkedin.com/in/adarshnambiar12/",
+    "email": "adarsh.nambiar@vit.edu.in",
+    "order": 7
+  },
+  {
+    "id": "nisha-shetty",
+    "name": "Nisha Shetty",
+    "position": "Documentation Lead",
+    "img": "https://res.cloudinary.com/du6zyqqyw/image/upload/f_auto,q_auto/v1740560606/img/2024-2025/team/nishashetty.jpg",
+    "linkedin": "https://www.linkedin.com/in/nishashetty2022/",
+    "email": "nisha.shetty@vit.edu.in",
+    "order": 8
+  },
+  {
+    "id": "sahil-rasam",
+    "name": "Sahil Rasam",
+    "position": "Creatives Lead",
+    "img": "https://res.cloudinary.com/du6zyqqyw/image/upload/f_auto,q_auto/v1740560606/img/2024-2025/team/sahilrasam.jpg",
+    "linkedin": "https://www.linkedin.com/in/sahil-rasam-997747257/",
+    "email": "sahil.rasam@vit.edu.in",
+    "order": 9
+  },
+  {
+    "id": "pankaja-raut",
+    "name": "Pankaja Raut",
+    "position": "Creatives Lead",
+    "img": "https://res.cloudinary.com/du6zyqqyw/image/upload/f_auto,q_auto/v1740560606/img/2024-2025/team/pankajraut.jpg",
+    "linkedin": "https://www.linkedin.com/in/pankaja-raut-883b7b256/",
+    "email": "pankaja.raut@vit.edu.in",
+    "order": 10
+  },
+  {
+    "id": "dipesh-yadav",
+    "name": "Dipesh Yadav",
+    "position": "Events Lead",
+    "img": "https://res.cloudinary.com/du6zyqqyw/image/upload/f_auto,q_auto/v1740560606/img/2024-2025/team/dipeshyadav.jpg",
+    "linkedin": "https://www.linkedin.com/in/dipesh-yadav-98267a289/",
+    "email": "dipesh.yadav@vit.edu.in",
+    "order": 11
+  },
+  {
+    "id": "akshay-jankar",
+    "name": "Akshay Jankar",
+    "position": "Events Lead",
+    "img": "https://res.cloudinary.com/du6zyqqyw/image/upload/f_auto,q_auto/v1740560606/img/2024-2025/team/akshayjankar.jpg",
+    "linkedin": "https://www.linkedin.com/in/akshayrj/",
+    "email": "akshay.jankar22@vit.edu.in",
+    "order": 12
+  },
+  {
+    "id": "anoushka-joshi",
+    "name": "Anoushka Joshi",
+    "position": "Publicity Lead",
+    "img": "https://res.cloudinary.com/du6zyqqyw/image/upload/f_auto,q_auto/v1740560606/img/2024-2025/team/anoushkajoshi.jpg",
+    "linkedin": "https://www.linkedin.com/in/anoushka-joshi-284190243/",
+    "email": "anoushka.joshi@vit.edu.in",
+    "order": 13
+  },
+  {
+    "id": "kaushal-kolhe",
+    "name": "Kaushal Kolhe",
+    "position": "Publicity Lead",
+    "img": "https://res.cloudinary.com/du6zyqqyw/image/upload/f_auto,q_auto/v1740560606/img/2024-2025/team/kaushalkolhe.jpg",
+    "linkedin": "https://www.linkedin.com/in/kaushal-kolhe-54b941223/",
+    "email": "kaushal.kolhe@vit.edu.in",
+    "order": 14
+  },
+  {
+    "id": "samarth-mishra",
+    "name": "Samarth Mishra",
+    "position": "Cultural Lead",
+    "img": "https://res.cloudinary.com/du6zyqqyw/image/upload/f_auto,q_auto/v1740560606/img/2024-2025/team/samarthmishra.jpg",
+    "linkedin": "https://www.linkedin.com/in/samarth-mishra-912bb6255/",
+    "email": "samarth.mishra@vit.edu.in",
+    "order": 15
+  },
+  {
+    "id": "sanika-karpe",
+    "name": "Sanika Karpe",
+    "position": "Cultural Lead",
+    "img": "https://res.cloudinary.com/du6zyqqyw/image/upload/f_auto,q_auto/v1740560606/img/2024-2025/team/sanikakarpe.jpg",
+    "linkedin": "https://www.linkedin.com/in/sanika-karpe-19856625a/",
+    "email": "sanika.karpe@vit.edu.in",
+    "order": 16
+  },
+  {
+    "id": "sanika-korpe",
+    "name": "Sanika Korpe",
+    "position": "Social Media Lead",
+    "img": "https://res.cloudinary.com/du6zyqqyw/image/upload/f_auto,q_auto/v1740560606/img/2024-2025/team/sanikakorpe.jpg",
+    "linkedin": "https://www.linkedin.com/in/sanika-korpe/",
+    "email": "sanika.korpe@vit.edu.in",
+    "order": 17
+  },
+  {
+    "id": "pranjal-ghuge",
+    "name": "Pranjal Ghuge",
+    "position": "Social Media Lead",
+    "img": "https://res.cloudinary.com/du6zyqqyw/image/upload/f_auto,q_auto/v1740560606/img/2024-2025/team/pranjalghuge.jpg",
+    "linkedin": "https://www.linkedin.com/in/pranjal-ghuge-8854b1283/",
+    "email": "pranjal.ghuge@vit.edu.in",
+    "order": 18
+  }
+]
