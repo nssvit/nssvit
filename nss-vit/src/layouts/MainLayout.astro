@@ -50,7 +50,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
 
     <!-- Cloudflare Web Analytics -->
-    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "39ed3b42fba84632b83ca06db0d8e0e8"}'></script>
+    <script is:inline defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "39ed3b42fba84632b83ca06db0d8e0e8"}'></script>
   </head>
   <body class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
     <slot />
