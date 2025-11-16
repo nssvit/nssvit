@@ -1,0 +1,121 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import { getCollection } from 'astro:content';
+
+const campData = await getCollection('camp');
+const sortedCamps = campData.sort((a, b) => a.data.order - b.data.order);
+---
+
+<MainLayout
+  title="NSS VIT | Special Camp"
+  description="Discover the impact of NSS VIT Special Camps. Community service, village development, and student transformation through hands-on social initiatives."
+>
+  <Navbar />
+
+  <section class="py-20 bg-gradient-to-br from-green-50 via-white to-blue-50 min-h-screen">
+    <div class="container-custom">
+      <!-- Hero Section -->
+      <div class="text-center mb-16 animate-fade-in">
+        <h1 class="section-title">NSS Special Camp</h1>
+        <p class="section-subtitle">
+          Transforming communities through dedicated service and sustainable development
+        </p>
+      </div>
+
+      <!-- About Camp Section -->
+      <div class="max-w-4xl mx-auto mb-20">
+        <div class="card p-8 animate-slide-up">
+          <h2 class="text-3xl font-bold text-primary-600 mb-4">About Our Special Camp</h2>
+          <p class="text-gray-700 leading-relaxed mb-4">
+            The NSS Special Camp is a week-long residential program where volunteers immerse themselves in rural communities to address local challenges and promote sustainable development. It's an intensive learning experience that combines service, skill-building, and cultural exchange.
+          </p>
+          <p class="text-gray-700 leading-relaxed">
+            Through these camps, our volunteers gain firsthand experience in community development, develop leadership skills, and create lasting positive impacts on the villages we serve. Each camp focuses on specific themes aligned with the community's needs.
+          </p>
+        </div>
+      </div>
+
+      <!-- Camp Timeline -->
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold text-center text-primary-600 mb-12">Camp History</h2>
+
+        <div class="space-y-12">
+          {sortedCamps.map((camp, index) => (
+            <div class="relative animate-slide-up" style={`animation-delay: ${index * 0.2}s`}>
+              <!-- Timeline connector -->
+              {index < sortedCamps.length - 1 && (
+                <div class="hidden md:block absolute left-1/2 top-full h-12 w-1 bg-gradient-to-b from-primary-600 to-primary-400 transform -translate-x-1/2"></div>
+              )}
+
+              <div class="grid md:grid-cols-2 gap-8 items-center">
+                <!-- Year Badge (alternates sides) -->
+                <div class:list={["flex justify-center md:justify-end", index % 2 === 0 ? "md:order-1" : "md:order-2"]}>
+                  <div class="inline-flex items-center justify-center w-32 h-32 rounded-full bg-gradient-to-br from-primary-600 to-primary-800 shadow-2xl">
+                    <span class="text-white text-2xl font-bold">{camp.data.year}</span>
+                  </div>
+                </div>
+
+                <!-- Camp Details Card -->
+                <div class:list={["card p-8", index % 2 === 0 ? "md:order-2" : "md:order-1"]}>
+                  <!-- Theme Badge -->
+                  <div class="inline-block bg-gradient-to-r from-primary-600 to-primary-800 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                    Theme: {camp.data.theme}
+                  </div>
+
+                  <h3 class="text-2xl font-bold text-gray-900 mb-4">{camp.data.location}</h3>
+
+                  <div class="flex items-center text-gray-600 mb-4">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span>{camp.data.dates}</span>
+                  </div>
+
+                  <p class="text-gray-700 mb-6 leading-relaxed">{camp.data.description}</p>
+
+                  <!-- Highlights -->
+                  <div>
+                    <h4 class="font-semibold text-gray-900 mb-3 flex items-center">
+                      <svg class="w-5 h-5 mr-2 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                      </svg>
+                      Key Highlights
+                    </h4>
+                    <ul class="space-y-2">
+                      {camp.data.highlights.map((highlight) => (
+                        <li class="flex items-start text-gray-700">
+                          <span class="inline-block w-2 h-2 bg-primary-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                          <span>{highlight}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- CTA Section -->
+      <div class="max-w-4xl mx-auto mt-20">
+        <div class="card p-8 text-center bg-gradient-to-br from-primary-600 to-primary-800 text-white">
+          <h2 class="text-3xl font-bold mb-4">Want to Be Part of the Next Camp?</h2>
+          <p class="text-lg mb-6 opacity-90">
+            Join NSS VIT and get the opportunity to participate in our life-changing special camps. Make a difference while building lifelong memories and skills.
+          </p>
+          <a href="/#contact" class="btn-secondary bg-white text-primary-600 hover:bg-gray-100 inline-flex items-center">
+            Join NSS VIT
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</MainLayout>

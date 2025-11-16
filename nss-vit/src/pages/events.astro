@@ -1,0 +1,217 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+// Event categories with their activities
+const eventCategories = [
+  {
+    title: "Area Based - 1",
+    description: "Environmental conservation and community awareness initiatives",
+    icon: "🌱",
+    color: "from-green-500 to-emerald-600",
+    activities: [
+      {
+        name: "Beach Clean-Ups",
+        location: "Mahim, Dadar, Juhu",
+        description: "Through the beach clean-ups, we spread awareness about single-use plastic pollution. We realized that we are responsible for the debris and connected with like-minded people across the city, working together as a team."
+      },
+      {
+        name: "Tree Plantation Drives",
+        location: "Sanjay Gandhi National Park, Aarey Forest",
+        description: "The Tree Plantation Drive helps us to connect to mother nature. Participants plant trees to support biodiversity and mitigate climate change, fostering a sense of community and purpose."
+      },
+      {
+        name: "Tree Restoration Drive",
+        location: "Aarey Forest, Sanjay Gandhi National Park",
+        description: "During the Tree Restoration Drives, we focus on reviving green spaces and restoring natural habitats. This event highlights the significance of caring for the environment."
+      },
+      {
+        name: "Ganpati Visarjan Cleanups",
+        location: "Juhu Beach, Girgaon Chowpatty",
+        description: "During the post-Ganpati cleanups, we collect the statue remains and other trash, promoting environmental awareness. The event highlights the importance of beach cleanups, recycling, and community responsibility."
+      }
+    ]
+  },
+  {
+    title: "Area Based - 2",
+    description: "Health, education, and community development programs",
+    icon: "❤️",
+    color: "from-red-500 to-pink-600",
+    activities: [
+      {
+        name: "Orphanage Teaching Drives",
+        location: "Kurla, Mahim, Sanjay Gandhi National Park",
+        description: "Orphanage Teachings provide a nurturing environment for children to learn and grow. Volunteers engage with the children, offering educational guidance and mentorship to underprivileged children."
+      },
+      {
+        name: "Polio Vaccination Drives",
+        location: "Antop Hill",
+        description: "The Polio Vaccination Drives at Antop Hill aim to eradicate polio through community-wide vaccination efforts. Volunteers work tirelessly to vaccinate the children, protecting them from the effects of polio and promoting public health."
+      },
+      {
+        name: "Red Run Marathon",
+        location: "Wadala",
+        description: "The Red Run Marathon in Wadala unites over 500 individuals in a 3-kilometer race against AIDS/HIV stigma. Top performers are celebrated, adding excitement to the event while spreading awareness."
+      },
+      {
+        name: "Blood Donation Camps",
+        location: "Churchgate, CSMT",
+        description: "The Blood Donation Camp is an event where volunteers collect blood from the donors to save lives. Some of our volunteers also donate their own blood, embodying the spirit of community and compassion."
+      },
+      {
+        name: "Wall Paintings",
+        location: "Sion, Chunabhatti",
+        description: "The Wall Painting brings together volunteers to transform school walls and railway station walls into colorful and inspiring artworks, creating a vibrant and welcoming atmosphere for everyone."
+      }
+    ]
+  },
+  {
+    title: "University Events",
+    description: "Large-scale events organized at the university level",
+    icon: "🎓",
+    color: "from-blue-500 to-indigo-600",
+    activities: [
+      {
+        name: "NSS Day Celebrations",
+        location: "University Campus",
+        description: "Annual celebration of NSS Day with cultural programs, exhibitions, and recognition of outstanding volunteers who have contributed significantly to social service."
+      },
+      {
+        name: "Youth Festival",
+        location: "Various Locations",
+        description: "Inter-college competitions promoting cultural exchange, social awareness, and youth engagement through various performing arts and social activities."
+      }
+    ]
+  },
+  {
+    title: "College Events",
+    description: "Campus-based activities and awareness programs",
+    icon: "🏫",
+    color: "from-purple-500 to-violet-600",
+    activities: [
+      {
+        name: "Awareness Campaigns",
+        location: "VIT Campus",
+        description: "Regular campaigns on campus covering topics like mental health, environmental conservation, women's safety, and social issues to create awareness among students."
+      },
+      {
+        name: "Skill Development Workshops",
+        location: "VIT Campus",
+        description: "Workshops focused on developing practical skills, leadership qualities, and preparing volunteers for effective community service and personal growth."
+      }
+    ]
+  },
+  {
+    title: "Competitions",
+    description: "Inter-college NSS competitions and cultural events",
+    icon: "🏆",
+    color: "from-yellow-500 to-orange-600",
+    activities: [
+      {
+        name: "NSS Competitions",
+        location: "Various Colleges",
+        description: "Participation in inter-college NSS competitions including street plays, group dances, debates, and other cultural activities that promote social messages and awareness."
+      }
+    ]
+  }
+];
+---
+
+<MainLayout
+  title="NSS VIT | Events & Activities"
+  description="Explore the wide range of community service events and social activities organized by NSS VIT throughout the year."
+>
+  <Navbar />
+
+  <section class="py-20 bg-gradient-to-br from-blue-50 via-white to-purple-50 min-h-screen">
+    <div class="container-custom">
+      <!-- Hero Section -->
+      <div class="text-center mb-16 animate-fade-in">
+        <h1 class="section-title">Our Events & Activities</h1>
+        <p class="section-subtitle">
+          Making a difference through diverse community service initiatives and social programs
+        </p>
+      </div>
+
+      <!-- Event Categories -->
+      <div class="space-y-12">
+        {eventCategories.map((category, catIndex) => (
+          <div class="animate-slide-up" style={`animation-delay: ${catIndex * 0.1}s`}>
+            <!-- Category Header -->
+            <div class="mb-6">
+              <div class="flex items-center justify-center md:justify-start mb-3">
+                <span class="text-4xl mr-3">{category.icon}</span>
+                <h2 class={`text-3xl font-bold bg-gradient-to-r ${category.color} bg-clip-text text-transparent`}>
+                  {category.title}
+                </h2>
+              </div>
+              <p class="text-gray-600 text-center md:text-left max-w-3xl">
+                {category.description}
+              </p>
+            </div>
+
+            <!-- Activities Grid -->
+            <div class="grid md:grid-cols-2 gap-6">
+              {category.activities.map((activity, actIndex) => (
+                <div
+                  class="card p-6 hover:scale-105 transition-all duration-300"
+                  style={`animation-delay: ${(catIndex * 0.1) + (actIndex * 0.05)}s`}
+                >
+                  <h3 class="text-xl font-bold text-gray-900 mb-2">{activity.name}</h3>
+
+                  <div class="flex items-center text-sm text-primary-600 mb-3">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span>{activity.location}</span>
+                  </div>
+
+                  <p class="text-gray-700 leading-relaxed">
+                    {activity.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Impact Stats -->
+      <div class="mt-20 card p-8 bg-gradient-to-br from-primary-600 to-primary-800 text-white">
+        <h2 class="text-3xl font-bold text-center mb-12">Our Impact</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div>
+            <div class="text-4xl font-bold mb-2">50+</div>
+            <div class="text-sm opacity-90">Events Per Year</div>
+          </div>
+          <div>
+            <div class="text-4xl font-bold mb-2">100+</div>
+            <div class="text-sm opacity-90">Active Volunteers</div>
+          </div>
+          <div>
+            <div class="text-4xl font-bold mb-2">5000+</div>
+            <div class="text-sm opacity-90">Hours of Service</div>
+          </div>
+          <div>
+            <div class="text-4xl font-bold mb-2">10+</div>
+            <div class="text-sm opacity-90">Communities Served</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="text-center mt-16">
+        <a href="/gallery" class="btn-primary inline-flex items-center text-lg">
+          View Event Gallery
+          <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</MainLayout>
