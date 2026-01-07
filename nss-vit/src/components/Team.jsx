@@ -1,6 +1,6 @@
 import React from 'react'
-import Profiles from './team/Profiles'
-import Volunteers from './team/Volunteers'
+import NewHeads from './team/New_Heads';
+import Volunteers from './team/Volunteers_25'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
 
 const Team = () => {
@@ -32,7 +32,7 @@ const Team = () => {
             Our Team
           </h1>
           <div className="max-w-7xl mx-auto">
-            <Profiles />
+            <NewHeads />
             <Volunteers />
           </div>
         </div>
