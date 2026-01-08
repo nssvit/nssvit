@@ -19,10 +19,19 @@ const contactInfo = await sanityClient.fetch(`
   *[_type == "contactInfo"][0] {
     email,
     phone,
-    "addressText": address,
+    address {
+      line1,
+      line2,
+      city
+    },
     socialLinks
   }
 `);
+
+// Format address for display
+const formattedAddress = contactInfo?.address
+  ? `${contactInfo.address.line1 || 'Vidyalankar Institute of Technology'}${contactInfo.address.line2 ? ', ' + contactInfo.address.line2 : ''}, ${contactInfo.address.city || 'Mumbai'}`
+  : null;
 
 const ways = [
   {
@@ -102,49 +111,37 @@ const ways = [
         <div class="bg-swiss-gray-50 border border-swiss-gray-200 p-4 md:p-6 lg:sticky lg:top-24">
           <h3 class="text-caption md:text-title font-semibold text-text mb-4 md:mb-6">Contact Information</h3>
 
-          <div class="space-y-6">
-            {contactInfo?.email && (
-              <div>
-                <span class="text-label text-swiss-gray-500 block mb-1">Email</span>
-                <a href={`mailto:${contactInfo.email}`} class="text-body text-primary hover:underline">
-                  {contactInfo.email}
-                </a>
-              </div>
-            )}
+          <div class="space-y-4 md:space-y-5">
+            {/* Email */}
+            <div>
+              <span class="text-label text-swiss-gray-500 block mb-1">Email</span>
+              <a href={`mailto:${contactInfo?.email || 'nss@vit.edu.in'}`} class="text-caption md:text-body text-primary hover:underline break-all">
+                {contactInfo?.email || 'nss@vit.edu.in'}
+              </a>
+            </div>
 
+            {/* Phone - only if available */}
             {contactInfo?.phone && (
               <div>
                 <span class="text-label text-swiss-gray-500 block mb-1">Phone</span>
-                <a href={`tel:${contactInfo.phone}`} class="text-body text-text hover:text-primary">
+                <a href={`tel:${contactInfo.phone}`} class="text-caption md:text-body text-text hover:text-primary">
                   {contactInfo.phone}
                 </a>
               </div>
             )}
 
-            {contactInfo?.addressText && (
-              <div>
-                <span class="text-label text-swiss-gray-500 block mb-1">Address</span>
-                <p class="text-body text-text">{contactInfo.addressText}</p>
-              </div>
-            )}
-
-            {!contactInfo?.email && !contactInfo?.phone && (
-              <>
-                <div>
-                  <span class="text-label text-swiss-gray-500 block mb-1">Email</span>
-                  <a href="mailto:nss@vit.edu.in" class="text-body text-primary hover:underline">
-                    nss@vit.edu.in
-                  </a>
-                </div>
-                <div>
-                  <span class="text-label text-swiss-gray-500 block mb-1">Location</span>
-                  <p class="text-body text-text">
-                    Vidyalankar Institute of Technology<br />
-                    Wadala, Mumbai - 400037
-                  </p>
-                </div>
-              </>
-            )}
+            {/* Address */}
+            <div>
+              <span class="text-label text-swiss-gray-500 block mb-1">Address</span>
+              <p class="text-caption md:text-body text-text">
+                {formattedAddress || (
+                  <>
+                    Vidyalankar Institute of Technology,<br />
+                    Wadala (E), Mumbai - 400037
+                  </>
+                )}
+              </p>
+            </div>
           </div>
 
           <div class="mt-8 pt-6 border-t border-swiss-gray-200">

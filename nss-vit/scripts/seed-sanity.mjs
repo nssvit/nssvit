@@ -475,7 +475,7 @@ async function seedSiteSettings() {
     _type: 'siteConfig',
     title: 'NSS VIT',
     tagline: 'Not Me, But You',
-    siteDescription: 'NSS VIT Vidyalankar - National Service Scheme unit fostering community service, leadership development, and social responsibility since 1969.',
+    siteDescription: 'NSS VIT Vidyalankar - National Service Scheme unit fostering community service, leadership development, and social responsibility since 1999.',
     keywords: ['NSS', 'VIT', 'Vidyalankar', 'National Service Scheme', 'Mumbai', 'Volunteers', 'Community Service'],
   };
 
@@ -492,7 +492,7 @@ async function seedSiteSettings() {
     _id: 'homepage',
     _type: 'homepage',
     heroTagline: 'NOT ME, BUT YOU',
-    heroSubtext: 'Fostering community service and leadership at Vidyalankar since 1969.',
+    heroSubtext: 'Fostering community service and leadership at Vidyalankar since 1999.',
     heroCtaText: 'Join Us',
     heroCtaLink: '/team',
     stats: [
@@ -545,7 +545,7 @@ async function seedSiteSettings() {
     _id: 'footerContent',
     _type: 'footerContent',
     aboutTitle: 'NSS VIT',
-    aboutDescription: 'National Service Scheme unit at Vidyalankar Institute of Technology, fostering community service and leadership development since 1969.',
+    aboutDescription: 'National Service Scheme unit at Vidyalankar Institute of Technology, fostering community service and leadership development since 1999.',
     quickLinksTitle: 'Quick Links',
     quickLinks: [
       { _key: 'link-1', label: 'About Us', href: '/#about' },

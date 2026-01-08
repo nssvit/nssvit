@@ -37,18 +37,22 @@ export default function AchievementsDisplay({ achievements, years }: Props) {
 
   // Lightbox state
   const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [lightboxImages, setLightboxImages] = useState<string[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+
+  const currentAchievements = achievements.filter(a => a.year === selectedYear);
+
+  // Collect all achievement images for navigation
+  const allAchievementImages = currentAchievements
+    .filter(a => a.image)
+    .map(a => a.image as string);
 
   const openLightbox = (image: string) => {
     if (image) {
-      setLightboxImages([image]);
-      setLightboxIndex(0);
+      const index = allAchievementImages.indexOf(image);
+      setLightboxIndex(index >= 0 ? index : 0);
       setLightboxOpen(true);
     }
   };
-
-  const currentAchievements = achievements.filter(a => a.year === selectedYear);
   const featuredAchievements = currentAchievements.filter(a => a.isFeatured);
   const otherAchievements = currentAchievements.filter(a => !a.isFeatured);
 
@@ -325,7 +329,7 @@ export default function AchievementsDisplay({ achievements, years }: Props) {
 
       {/* Lightbox */}
       <ImageLightbox
-        images={lightboxImages}
+        images={allAchievementImages}
         initialIndex={lightboxIndex}
         isOpen={lightboxOpen}
         onClose={() => setLightboxOpen(false)}

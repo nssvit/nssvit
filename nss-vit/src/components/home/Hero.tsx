@@ -27,7 +27,7 @@ export default function HeroSection({
   heroImage = '/hero-nss.png',
   volunteerCount = '350+',
   heroTagline = 'NOT ME, BUT YOU',
-  heroSubtext = 'Fostering community service and leadership at Vidyalankar since 1969.',
+  heroSubtext = 'Fostering community service and leadership at Vidyalankar since 1999.',
   featuredAchievement = null
 }: Props) {
   // Split tagline for animation (handles "NOT ME, BUT YOU" format)

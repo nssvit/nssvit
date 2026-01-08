@@ -15,13 +15,25 @@ import { TeamDisplay } from '../components/team';
 import { sanityClient } from 'sanity:client';
 
 // Load all academic years
-const academicYears = await sanityClient.fetch(`
+const allAcademicYears = await sanityClient.fetch(`
   *[_type == "academicYear"] | order(year desc) {
     _id,
     year,
     isCurrentYear
   }
 `);
+
+// Get years that have actual team members (non-faculty) or volunteers
+const yearsWithTeam = await sanityClient.fetch(`
+  array::unique(*[_type == "teamMember" && position->category != "faculty"]{ "year": academicYear->year }.year)
+`);
+const yearsWithVolunteers = await sanityClient.fetch(`
+  array::unique(*[_type == "volunteerGroup"]{ "year": academicYear->year }.year)
+`);
+
+// Only show years that have actual content (not just faculty)
+const validYears = [...new Set([...yearsWithTeam, ...yearsWithVolunteers])];
+const academicYears = allAcademicYears.filter((y: any) => validYears.includes(y.year));
 
 // Load all team members grouped by year
 const allTeamMembers = await sanityClient.fetch(`
@@ -57,13 +69,28 @@ const allVolunteerGroups = await sanityClient.fetch(`
 `);
 
 // Transform data to match component expectations
-// Group team members by year
+// Separate faculty (they appear in ALL years) from other members
+const facultyMembers = allTeamMembers.filter((m: any) => m.positionCategory === 'faculty');
+const nonFacultyMembers = allTeamMembers.filter((m: any) => m.positionCategory !== 'faculty');
+
+// Get the most recent faculty entries (avoid duplicates)
+const uniqueFaculty = facultyMembers.reduce((acc: any[], m: any) => {
+  const existing = acc.find((f: any) => f.name === m.name && f.position === m.position);
+  if (!existing) {
+    acc.push(m);
+  }
+  return acc;
+}, []);
+
+// Group team members by year, including faculty in every year
 const teamsByYear = academicYears.map((yearData: any) => {
-  const members = allTeamMembers.filter((m: any) => m.year === yearData.year);
+  const yearMembers = nonFacultyMembers.filter((m: any) => m.year === yearData.year);
+  // Include faculty in every year
+  const allMembers = [...uniqueFaculty, ...yearMembers];
   return {
     year: yearData.year,
     isCurrentYear: yearData.isCurrentYear,
-    members: members.map((m: any) => ({
+    members: allMembers.map((m: any) => ({
       name: m.name,
       position: m.position,
       positionCategory: m.positionCategory,
