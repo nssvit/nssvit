@@ -20,11 +20,12 @@ interface Props {
 const { stats } = Astro.props;
 
 // Default stats if none provided
+// NSS VIT established in 1999 (VIT founded 1999)
 const defaultStats: Stat[] = [
-  { value: '50+', label: 'Years' },
-  { value: '350+', label: 'Volunteers' },
-  { value: '100+', label: 'Events/Year' },
-  { value: '10K+', label: 'Lives Impacted' },
+  { value: '25+', label: 'Years' },
+  { value: '100+', label: 'Volunteers' },
+  { value: '60+', label: 'Events' },
+  { value: '8K+', label: 'Lives Impacted' },
 ];
 
 // Use provided stats or defaults
@@ -36,7 +37,7 @@ const finalStats = displayStats.slice(0, 4);
 
 // Add "Years" stat if not present and we have less than 4 stats
 if (finalStats.length < 4 && !finalStats.some(s => s.label.toLowerCase().includes('year'))) {
-  finalStats.unshift({ value: '50+', label: 'Years' });
+  finalStats.unshift({ value: '25+', label: 'Years' });
 }
 ---
 

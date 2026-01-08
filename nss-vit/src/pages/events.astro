@@ -113,27 +113,4 @@ const stats = {
     />
   </section>
 
-  <!-- Stats Section -->
-  <section class="bg-swiss-gray-50 border-y border-swiss-gray-200">
-    <div class="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-10 py-16">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-        <div class="text-center">
-          <span class="text-display text-text">{typeof stats.eventsPerYear === 'number' ? `${stats.eventsPerYear}+` : stats.eventsPerYear}</span>
-          <p class="text-caption text-swiss-gray-500 mt-2">Events Per Year</p>
-        </div>
-        <div class="text-center">
-          <span class="text-display text-text">{stats.categories}</span>
-          <p class="text-caption text-swiss-gray-500 mt-2">Event Categories</p>
-        </div>
-        <div class="text-center">
-          <span class="text-display text-text">{typeof stats.volunteers === 'number' ? `${stats.volunteers}+` : stats.volunteers}</span>
-          <p class="text-caption text-swiss-gray-500 mt-2">Active Volunteers</p>
-        </div>
-        <div class="text-center">
-          <span class="text-display text-text">{typeof stats.livesImpacted === 'number' ? `${stats.livesImpacted}+` : stats.livesImpacted}</span>
-          <p class="text-caption text-swiss-gray-500 mt-2">Lives Impacted</p>
-        </div>
-      </div>
-    </div>
-  </section>
 </BaseLayout>
