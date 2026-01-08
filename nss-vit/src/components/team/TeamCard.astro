@@ -1,0 +1,72 @@
+---
+/**
+ * ╻ NSS-VIT
+ * ┃ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * ┃ Not Me, But You
+ * ┃
+ * ┃ TeamCard.astro
+ * ╹ src/components/team/
+ */
+interface Props {
+  name: string;
+  position: string;
+  image?: string;
+  linkedin?: string;
+  email?: string;
+  fallbackImage?: string;
+}
+
+const { name, position, image, linkedin, email, fallbackImage } = Astro.props;
+const displayImage = image || fallbackImage || '/favicon.svg';
+---
+
+<div class="border border-swiss-gray-200 hover:border-primary p-6 transition-colors group">
+  <!-- Photo -->
+  <div class="relative mb-4">
+    <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-2 border-swiss-gray-100 group-hover:border-primary transition-colors bg-swiss-gray-100">
+      <img
+        src={displayImage}
+        alt={name}
+        class="w-full h-full object-cover"
+        loading="lazy"
+      />
+    </div>
+  </div>
+
+  <!-- Info -->
+  <div class="text-center">
+    <h3 class="text-title text-text mb-1">{name}</h3>
+    <p class="text-caption text-swiss-gray-500 mb-4">{position}</p>
+
+    <!-- Social Links -->
+    <div class="flex justify-center gap-3">
+      {linkedin && (
+        <a
+          href={linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${name}'s LinkedIn profile`}
+          class="w-9 h-9 border border-swiss-gray-200 flex items-center justify-center text-swiss-gray-400 hover:border-primary hover:text-primary transition-colors"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+            <rect width="4" height="12" x="2" y="9"/>
+            <circle cx="4" cy="4" r="2"/>
+          </svg>
+        </a>
+      )}
+      {email && (
+        <a
+          href={`mailto:${email}`}
+          aria-label={`Email ${name}`}
+          class="w-9 h-9 border border-swiss-gray-200 flex items-center justify-center text-swiss-gray-400 hover:border-primary hover:text-primary transition-colors"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="20" height="16" x="2" y="4" rx="2"/>
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+          </svg>
+        </a>
+      )}
+    </div>
+  </div>
+</div>

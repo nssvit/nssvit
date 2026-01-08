@@ -1,0 +1,277 @@
+---
+/**
+ * ╻ NSS-VIT
+ * ┃ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * ┃ Not Me, But You
+ * ┃
+ * ┃ achievements.astro - Swiss Style Redesign
+ * ╹ src/pages/
+ */
+export const prerender = true;
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { sanityClient } from 'sanity:client';
+
+// Load all achievements
+const allAchievements = await sanityClient.fetch(`
+  *[_type == "achievement"] | order(order asc, date desc) {
+    _id,
+    title,
+    institution,
+    date,
+    description,
+    "image": image.asset->url,
+    participants,
+    category,
+    isFeatured,
+    order,
+    "year": academicYear->year
+  }
+`);
+
+// Load academic years
+const academicYears = await sanityClient.fetch(`
+  *[_type == "academicYear"] | order(year desc) {
+    _id,
+    year,
+    isCurrentYear
+  }
+`);
+
+// Group achievements by year
+const achievementsByYear: Record<string, any[]> = {};
+academicYears.forEach((yearData: any) => {
+  achievementsByYear[yearData.year] = allAchievements.filter((a: any) => a.year === yearData.year);
+});
+
+// Get years with achievements (sorted descending)
+const yearsWithAchievements = academicYears
+  .filter((y: any) => achievementsByYear[y.year]?.length > 0)
+  .map((y: any) => y.year);
+
+// Default to latest year with achievements
+const defaultYear = yearsWithAchievements[0] || '2024-2025';
+
+// Total achievements count
+const totalAchievements = allAchievements.length;
+
+// Get unique categories
+const categories = [...new Set(allAchievements.map((a: any) => a.category).filter(Boolean))];
+---
+
+<BaseLayout
+  title="Achievements"
+  description="Explore the awards and recognitions earned by NSS VIT volunteers in various inter-college competitions."
+>
+  <!-- Hero Section -->
+  <section class="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-10 pt-12 pb-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+      <!-- Left: Title & Description -->
+      <div class="lg:col-span-7">
+        <span class="text-label text-primary mb-4 block">Recognition</span>
+        <h1 class="text-display text-text mb-4">ACHIEVEMENTS</h1>
+        <p class="text-body text-swiss-gray-600 max-w-xl">
+          A collection of awards and recognitions earned by our dedicated volunteers
+          in inter-college competitions, cultural events, and community initiatives.
+        </p>
+      </div>
+
+      <!-- Right: Stats -->
+      <div class="lg:col-span-5 flex gap-6 lg:justify-end">
+        <div class="border-l-4 border-primary pl-6">
+          <span class="text-[64px] md:text-[80px] font-bold text-text leading-none">{totalAchievements}</span>
+          <p class="text-caption text-swiss-gray-500 mt-1">Total Awards</p>
+        </div>
+        <div class="border-l-4 border-swiss-gray-200 pl-6">
+          <span class="text-[64px] md:text-[80px] font-bold text-swiss-gray-300 leading-none">{yearsWithAchievements.length}</span>
+          <p class="text-caption text-swiss-gray-500 mt-1">Years</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Year Navigation -->
+  <section class="border-y border-swiss-gray-200 bg-swiss-gray-50">
+    <div class="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-10">
+      <div class="flex items-center gap-2 overflow-x-auto py-4 scrollbar-hide">
+        <span class="text-label text-swiss-gray-400 mr-4 flex-shrink-0">Year:</span>
+        {yearsWithAchievements.map((year: string, index: number) => (
+          <button
+            class={`year-tab px-5 py-2.5 text-sm font-semibold transition-all whitespace-nowrap ${
+              year === defaultYear
+                ? 'bg-text text-white'
+                : 'bg-white border border-swiss-gray-200 text-swiss-gray-600 hover:border-text hover:text-text'
+            }`}
+            data-year={year}
+          >
+            {year}
+            <span class={`ml-2 text-xs ${year === defaultYear ? 'text-white/60' : 'text-swiss-gray-400'}`}>
+              ({achievementsByYear[year]?.length || 0})
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Achievements Grid -->
+  <section class="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-10 py-12 md:py-16">
+    {yearsWithAchievements.map((year: string) => (
+      <div
+        class="achievements-year-section"
+        data-year={year}
+        style={year === defaultYear ? '' : 'display: none;'}
+      >
+        {/* Featured Achievement (First one) */}
+        {achievementsByYear[year]?.[0] && (
+          <div class="mb-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 bg-text group overflow-hidden">
+              {/* Image */}
+              <div class="relative h-[300px] lg:h-[400px] overflow-hidden">
+                {achievementsByYear[year][0].image ? (
+                  <img
+                    src={achievementsByYear[year][0].image}
+                    alt={achievementsByYear[year][0].title}
+                    class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                ) : (
+                  <div class="absolute inset-0 bg-swiss-gray-800 flex items-center justify-center">
+                    <svg class="w-16 h-16 text-swiss-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                    </svg>
+                  </div>
+                )}
+                {/* Number Badge */}
+                <div class="absolute top-6 left-6 w-12 h-12 bg-primary flex items-center justify-center">
+                  <span class="text-xl font-bold text-white">01</span>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div class="p-8 lg:p-12 flex flex-col justify-center">
+                {achievementsByYear[year][0].category && (
+                  <span class="text-label text-primary mb-4">{achievementsByYear[year][0].category}</span>
+                )}
+                <h2 class="text-headline text-white mb-3">{achievementsByYear[year][0].title}</h2>
+                <p class="text-body text-white/60 mb-4">{achievementsByYear[year][0].institution}</p>
+                {achievementsByYear[year][0].description && (
+                  <p class="text-caption text-white/80 mb-6">{achievementsByYear[year][0].description}</p>
+                )}
+                {achievementsByYear[year][0].participants?.length > 0 && (
+                  <div class="pt-4 border-t border-white/20">
+                    <span class="text-label text-white/40 block mb-2">Participants</span>
+                    <p class="text-caption text-white/70">{achievementsByYear[year][0].participants.join(' • ')}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Rest of Achievements */}
+        {achievementsByYear[year]?.length > 1 && (
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {achievementsByYear[year].slice(1).map((achievement: any, index: number) => (
+              <div class="group border border-swiss-gray-200 hover:border-text transition-all duration-300 bg-white">
+                {/* Image with Number Overlay */}
+                <div class="relative aspect-[16/10] overflow-hidden bg-swiss-gray-100">
+                  {achievement.image ? (
+                    <img
+                      src={achievement.image}
+                      alt={achievement.title}
+                      class="w-full h-full object-cover md:grayscale md:group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div class="w-full h-full flex items-center justify-center bg-swiss-gray-100">
+                      <svg class="w-12 h-12 text-swiss-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                      </svg>
+                    </div>
+                  )}
+                  {/* Number */}
+                  <div class="absolute top-4 left-4 w-10 h-10 bg-text/80 group-hover:bg-primary flex items-center justify-center transition-colors">
+                    <span class="text-sm font-bold text-white">{String(index + 2).padStart(2, '0')}</span>
+                  </div>
+                  {/* Category Badge */}
+                  {achievement.category && (
+                    <div class="absolute bottom-4 left-4 px-3 py-1 bg-white/90 text-xs font-medium text-text">
+                      {achievement.category}
+                    </div>
+                  )}
+                </div>
+
+                {/* Content */}
+                <div class="p-5">
+                  <h3 class="text-title text-text mb-1 group-hover:text-primary transition-colors line-clamp-2">
+                    {achievement.title}
+                  </h3>
+                  <p class="text-caption text-swiss-gray-500 mb-3">{achievement.institution}</p>
+
+                  {achievement.description && (
+                    <p class="text-caption text-swiss-gray-600 line-clamp-2 mb-3">
+                      {achievement.description}
+                    </p>
+                  )}
+
+                  {achievement.participants?.length > 0 && (
+                    <div class="pt-3 border-t border-swiss-gray-100">
+                      <p class="text-xs text-swiss-gray-400 line-clamp-1">
+                        {achievement.participants.join(' • ')}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Empty State */}
+        {(!achievementsByYear[year] || achievementsByYear[year].length === 0) && (
+          <div class="text-center py-16">
+            <svg class="w-16 h-16 text-swiss-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </svg>
+            <p class="text-body text-swiss-gray-500">No achievements recorded for this year yet.</p>
+          </div>
+        )}
+      </div>
+    ))}
+  </section>
+</BaseLayout>
+
+<script>
+  // Handle year tab selection
+  function initYearTabs() {
+    const tabs = document.querySelectorAll('.year-tab');
+    const sections = document.querySelectorAll('.achievements-year-section');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const year = tab.getAttribute('data-year');
+
+        // Update tabs
+        tabs.forEach(t => {
+          const isActive = t.getAttribute('data-year') === year;
+          t.classList.toggle('bg-text', isActive);
+          t.classList.toggle('text-white', isActive);
+          t.classList.toggle('bg-white', !isActive);
+          t.classList.toggle('border', !isActive);
+          t.classList.toggle('border-swiss-gray-200', !isActive);
+          t.classList.toggle('text-swiss-gray-600', !isActive);
+        });
+
+        // Update sections
+        sections.forEach(section => {
+          const sectionYear = section.getAttribute('data-year');
+          (section as HTMLElement).style.display = sectionYear === year ? '' : 'none';
+        });
+      });
+    });
+  }
+
+  // Initialize on page load and after view transitions
+  document.addEventListener('DOMContentLoaded', initYearTabs);
+  document.addEventListener('astro:page-load', initYearTabs);
+</script>

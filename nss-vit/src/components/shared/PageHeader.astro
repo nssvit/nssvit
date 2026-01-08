@@ -1,0 +1,30 @@
+---
+/**
+ * ╻ NSS-VIT
+ * ┃ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * ┃ Not Me, But You
+ * ┃
+ * ┃ PageHeader.astro
+ * ╹ src/components/shared/
+ */
+interface Props {
+  label?: string;
+  title: string;
+  description?: string;
+  class?: string;
+}
+
+const { label, title, description, class: className } = Astro.props;
+---
+
+<header class:list={["max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-10 py-16", className]}>
+  <div class="max-w-3xl">
+    {label && (
+      <span class="text-label text-primary mb-4 block">{label}</span>
+    )}
+    <h1 class="text-headline text-text mb-4">{title}</h1>
+    {description && (
+      <p class="text-body text-swiss-gray-600 max-w-2xl">{description}</p>
+    )}
+  </div>
+</header>

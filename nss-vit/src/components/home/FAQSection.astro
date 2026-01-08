@@ -1,0 +1,30 @@
+---
+/**
+ * ╻ NSS-VIT
+ * ┃ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * ┃ Not Me, But You
+ * ┃
+ * ┃ FAQSection.astro
+ * ╹ src/components/home/
+ */
+import FAQAccordion from '../shared/FAQAccordion';
+
+interface Props {
+  faqs?: Array<{ question: string; answer: string }>;
+}
+
+const { faqs } = Astro.props;
+---
+
+<section class="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-10 py-10 md:py-12">
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
+    <div class="md:col-span-4">
+      <span class="text-label text-primary mb-2 block">FAQ</span>
+      <h2 class="text-headline text-text mb-3">Questions?</h2>
+      <p class="text-caption text-swiss-gray-600">Common questions about NSS VIT.</p>
+    </div>
+    <div class="md:col-span-8">
+      <FAQAccordion client:load faqs={faqs} />
+    </div>
+  </div>
+</section>

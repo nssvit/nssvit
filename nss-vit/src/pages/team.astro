@@ -1,0 +1,114 @@
+---
+/**
+ * ╻ NSS-VIT
+ * ┃ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * ┃ Not Me, But You
+ * ┃
+ * ┃ team.astro
+ * ╹ src/pages/
+ */
+export const prerender = true;
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/shared/PageHeader.astro';
+import { TeamDisplay } from '../components/team';
+import { sanityClient } from 'sanity:client';
+
+// Load all academic years
+const academicYears = await sanityClient.fetch(`
+  *[_type == "academicYear"] | order(year desc) {
+    _id,
+    year,
+    isCurrentYear
+  }
+`);
+
+// Load all team members grouped by year
+const allTeamMembers = await sanityClient.fetch(`
+  *[_type == "teamMember" && isActive == true] | order(position->hierarchyOrder asc, order asc) {
+    _id,
+    name,
+    "position": position->title,
+    "positionCategory": position->category,
+    "positionOrder": position->hierarchyOrder,
+    "photo": photo.asset->url,
+    email,
+    linkedin,
+    order,
+    bio,
+    "year": academicYear->year
+  }
+`);
+
+// Load all volunteer groups
+const allVolunteerGroups = await sanityClient.fetch(`
+  *[_type == "volunteerGroup"] | order(order asc) {
+    _id,
+    title,
+    description,
+    members[] {
+      name,
+      "photo": photo.asset->url,
+      email
+    },
+    order,
+    "year": academicYear->year
+  }
+`);
+
+// Transform data to match component expectations
+// Group team members by year
+const teamsByYear = academicYears.map((yearData: any) => {
+  const members = allTeamMembers.filter((m: any) => m.year === yearData.year);
+  return {
+    year: yearData.year,
+    isCurrentYear: yearData.isCurrentYear,
+    members: members.map((m: any) => ({
+      name: m.name,
+      position: m.position,
+      positionCategory: m.positionCategory,
+      positionOrder: m.positionOrder,
+      image: m.photo,
+      email: m.email,
+      linkedin: m.linkedin,
+      order: m.order,
+      bio: m.bio
+    }))
+  };
+}).filter((t: any) => t.members.length > 0);
+
+// Group volunteers by year
+const volunteersByYear = academicYears.map((yearData: any) => {
+  const groups = allVolunteerGroups.filter((g: any) => g.year === yearData.year);
+  return {
+    year: yearData.year,
+    groups: groups.map((g: any) => ({
+      title: g.title,
+      members: g.members?.map((m: any) => m.name) || []
+    }))
+  };
+}).filter((v: any) => v.groups.length > 0);
+
+// Fallback image for members without photos
+const fallbackImage = '/assets/img/team/user.webp';
+---
+
+<BaseLayout
+  title="Our Team"
+  description="Meet the dedicated team behind NSS VIT - our program officers, faculty advisors, and student leaders working together for community service."
+>
+  <PageHeader
+    label="Meet Our Team"
+    title="THE PEOPLE BEHIND NSS VIT"
+    description="Our team of dedicated volunteers and leaders work tirelessly to make a difference in the community through various social initiatives."
+  />
+
+  <section class="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-10 pb-24">
+    <TeamDisplay
+      client:load
+      teams={teamsByYear}
+      volunteers={volunteersByYear}
+      fallbackImage={fallbackImage}
+    />
+  </section>
+</BaseLayout>
