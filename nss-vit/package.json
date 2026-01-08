@@ -30,6 +30,7 @@
     "seed:team-2024-2025:members": "node scripts/seed-team-2024-2025.mjs team",
     "seed:team-2024-2025:volunteers": "node scripts/seed-team-2024-2025.mjs volunteers",
     "fix:team-years": "node scripts/fix-team-years.mjs",
+    "migrate:years-forward": "node scripts/migrate-years-forward.mjs",
     "upload": "node scripts/upload-images.mjs",
     "upload:logos": "node scripts/upload-images.mjs logos",
     "upload:hero": "node scripts/upload-images.mjs hero",

@@ -88,11 +88,34 @@ const faqs = await sanityClient.fetch(`
 const currentYear = await sanityClient.fetch(`
   *[_type == "academicYear" && isCurrentYear == true][0] {
     year,
-    volunteerCount,
     eventsCount,
     beneficiariesReached
   }
 `);
+
+// Get previous academic year
+const allYears = await sanityClient.fetch(`
+  *[_type == "academicYear"] | order(year desc) { year }
+`);
+const currentYearIndex = allYears.findIndex((y: any) => y.year === currentYear?.year);
+const previousYear = currentYearIndex >= 0 && currentYearIndex < allYears.length - 1
+  ? allYears[currentYearIndex + 1]?.year
+  : null;
+
+// Calculate actual volunteer count:
+// Current year volunteers + Previous year heads (non-faculty)
+const volunteerGroups = await sanityClient.fetch(`
+  *[_type == "volunteerGroup" && academicYear->year == $year] {
+    "count": count(members)
+  }
+`, { year: currentYear?.year });
+const currentYearVolunteers = volunteerGroups?.reduce((sum: number, g: any) => sum + (g.count || 0), 0) || 0;
+
+const previousYearHeads = previousYear ? await sanityClient.fetch(`
+  count(*[_type == "teamMember" && academicYear->year == $year && position->category != "faculty"])
+`, { year: previousYear }) : 0;
+
+const calculatedVolunteerCount = currentYearVolunteers + (previousYearHeads || 0);
 
 // Load camp preview (latest camp)
 const latestCamp = await sanityClient.fetch(`
@@ -142,7 +165,8 @@ const highlightsContent = await sanityClient.fetch(`
 const heroImage = homepageContent?.heroImage || siteConfig?.heroImage || '/hero-nss.png';
 const heroTagline = homepageContent?.heroTagline || 'NOT ME, BUT YOU';
 const heroSubtext = homepageContent?.heroSubtext || 'Fostering community service and leadership at Vidyalankar since 1999';
-const volunteerCount = currentYear?.volunteerCount ? `${currentYear.volunteerCount}+` : '350+';
+// Use calculated count: current year volunteers + previous year heads
+const volunteerCount = calculatedVolunteerCount > 0 ? `${calculatedVolunteerCount}+` : '100+';
 const campPreviewImage = homepageContent?.campPreviewImage || latestCamp?.previewImage || '/hero-nss.png';
 const stats = homepageContent?.stats || [
   { value: volunteerCount, label: 'Volunteers' },
