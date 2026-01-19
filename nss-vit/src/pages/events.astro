@@ -1,0 +1,116 @@
+---
+/**
+ * ╻ NSS-VIT
+ * ┃ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * ┃ Not Me, But You
+ * ┃
+ * ┃ events.astro
+ * ╹ src/pages/
+ */
+export const prerender = true;
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/shared/PageHeader.astro';
+import { EventsDisplay } from '../components/events';
+import { sanityClient } from 'sanity:client';
+
+// Load event categories
+const categories = await sanityClient.fetch(`
+  *[_type == "eventCategory" && isActive == true] | order(order asc) {
+    _id,
+    name,
+    "id": slug.current,
+    description,
+    "img": coverImage.asset->url,
+    order
+  }
+`);
+
+// Load all events grouped by category
+const allEvents = await sanityClient.fetch(`
+  *[_type == "event"] | order(eventDate desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    eventDate,
+    location,
+    description,
+    volunteersInvolved,
+    beneficiaries,
+    "coverImage": coverImage.asset->url,
+    "category": category->slug.current,
+    "categoryName": category->name,
+    "year": academicYear->year,
+    isHighlighted,
+    isUpcoming,
+    registrationLink
+  }
+`);
+
+// Load academic years for filtering
+const academicYears = await sanityClient.fetch(`
+  *[_type == "academicYear"] | order(year desc) {
+    _id,
+    year,
+    isCurrentYear,
+    eventsCount,
+    volunteerCount,
+    beneficiariesReached
+  }
+`);
+
+// Get current year stats
+const currentYear = academicYears.find((y: any) => y.isCurrentYear) || academicYears[0];
+
+// Transform events to match component expectations
+// Group events by category
+const eventDetails = categories.map((cat: any) => ({
+  category: cat.id,
+  events: allEvents
+    .filter((e: any) => e.category === cat.id)
+    .map((e: any) => ({
+      title: e.title,
+      location: e.location,
+      description: e.description,
+      date: e.eventDate,
+      year: e.year,
+      volunteersInvolved: e.volunteersInvolved,
+      beneficiaries: e.beneficiaries,
+      coverImage: e.coverImage,
+      slug: e.slug,
+      isHighlighted: e.isHighlighted,
+      isUpcoming: e.isUpcoming,
+      registrationLink: e.registrationLink
+    }))
+}));
+
+// Stats from current year or calculated
+const stats = {
+  eventsPerYear: currentYear?.eventsCount || allEvents.filter((e: any) => e.year === currentYear?.year).length || '100+',
+  categories: categories.length || 5,
+  volunteers: currentYear?.volunteerCount || '350+',
+  livesImpacted: currentYear?.beneficiariesReached || '10K+'
+};
+---
+
+<BaseLayout
+  title="Events"
+  description="Explore the various community service events organized by NSS VIT - from beach cleanups to health camps, awareness drives to cultural programs."
+>
+  <PageHeader
+    label="Our Activities"
+    title="EVENTS & INITIATIVES"
+    description="We organize a wide range of community service activities throughout the year. Explore our events across different categories."
+  />
+
+  <!-- Events Display -->
+  <section class="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-10 pb-24">
+    <EventsDisplay
+      client:load
+      categories={categories || []}
+      eventDetails={eventDetails || []}
+      years={academicYears.map((y: any) => y.year)}
+    />
+  </section>
+
+</BaseLayout>

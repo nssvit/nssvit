@@ -1,0 +1,122 @@
+---
+/**
+ * ╻ NSS-VIT
+ * ┃ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * ┃ Not Me, But You
+ * ┃
+ * ┃ HighlightsBento.astro
+ * ╹ src/components/home/
+ */
+import { Image } from 'astro:assets';
+
+interface CampHighlight {
+  title: string;
+  subtitle: string;
+  description: string;
+  image: string;
+  link: string;
+}
+
+interface AchievementHighlight {
+  title: string;
+  description: string;
+  link: string;
+}
+
+interface RecognitionHighlight {
+  title: string;
+  description: string;
+}
+
+interface Props {
+  campPreviewImage?: string;
+  camp?: CampHighlight;
+  achievement?: AchievementHighlight;
+  recognition?: RecognitionHighlight;
+  galleryCount?: number;
+}
+
+const {
+  campPreviewImage = '/hero-nss.png',
+  camp = {
+    title: 'Special Camp',
+    subtitle: 'Camp 2024',
+    description: '7-day camp at Kuderan Village.',
+    image: campPreviewImage,
+    link: '/camp'
+  },
+  achievement = {
+    title: 'Competition Wins',
+    description: 'Multiple 1st places in 2024-25.',
+    link: '/achievements'
+  },
+  recognition = {
+    title: 'Inter-College Excellence',
+    description: 'Remarkable success across Mumbai colleges in 2024-25.'
+  },
+  galleryCount = 100
+} = Astro.props;
+const isExternalImage = camp.image?.startsWith('http');
+---
+
+<section class="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-10 py-10 md:py-12 border-t border-swiss-gray-200">
+  <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
+    <div>
+      <span class="text-label text-primary mb-2 block">Highlights</span>
+      <h2 class="text-headline text-text">Recent Activity</h2>
+    </div>
+    <a href="/events" class="text-caption text-swiss-gray-500 hover:text-primary transition-colors inline-flex items-center gap-1 press-effect">
+      All Events
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+    <!-- Camp Card -->
+    <a href={camp.link} class="col-span-1 sm:row-span-2 bg-blue-50 border-l-4 border-blue-500 p-4 hover-lift block">
+      <span class="text-label text-blue-600 mb-2 block">{camp.subtitle}</span>
+      <h3 class="text-base font-semibold text-text mb-2">{camp.title}</h3>
+      <p class="text-caption text-swiss-gray-600 text-xs mb-3">{camp.description}</p>
+      <div class="w-full h-20 sm:h-24 overflow-hidden border border-swiss-gray-200">
+        <img
+          src={camp.image || campPreviewImage}
+          alt={`NSS VIT ${camp.title}`}
+          loading="lazy"
+          decoding="async"
+          sizes="(max-width: 640px) 100vw, 25vw"
+          class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+        />
+      </div>
+    </a>
+
+    <!-- Achievement Card -->
+    <a href={achievement.link} class="col-span-1 bg-green-50 border-l-4 border-green-500 p-4 hover-lift block">
+      <span class="text-label text-green-600 mb-1 block">Achievement</span>
+      <h3 class="text-caption font-semibold text-text">{achievement.title}</h3>
+      <p class="text-caption text-swiss-gray-600 text-xs mt-1">{achievement.description}</p>
+    </a>
+
+    <!-- Recognition Card -->
+    <div class="col-span-1 sm:col-span-2 bg-amber-50 border-l-4 border-amber-500 p-4 hover-lift">
+      <div class="flex items-start gap-3">
+        <div class="w-8 h-8 border border-amber-500 flex items-center justify-center flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-amber-600"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+        </div>
+        <div>
+          <span class="text-label text-amber-600 mb-1 block">Recognition</span>
+          <h3 class="text-caption font-semibold text-text">{recognition.title}</h3>
+          <p class="text-caption text-swiss-gray-600 text-xs mt-1">{recognition.description}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gallery CTA -->
+    <a href="/gallery" class="col-span-1 sm:col-span-2 md:col-span-3 bg-primary p-4 flex items-center justify-between group hover-lift press-effect">
+      <div>
+        <span class="text-label text-white/60 mb-1 block">Gallery</span>
+        <h3 class="text-caption font-semibold text-white">Explore Our Journey ({galleryCount}+ Photos)</h3>
+      </div>
+      <span class="text-caption text-white border border-white px-3 py-1.5 group-hover:bg-white group-hover:text-primary transition-colors">View</span>
+    </a>
+  </div>
+</section>

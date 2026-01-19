@@ -1,0 +1,81 @@
+---
+/**
+ * ╻ NSS-VIT
+ * ┃ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * ┃ Not Me, But You
+ * ┃
+ * ┃ camp.astro - Swiss Style Camp Page
+ * ╹ src/pages/
+ */
+export const prerender = true;
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CampDisplay } from '../components/camp';
+import { sanityClient } from 'sanity:client';
+
+// Load all camp data from Sanity
+const camps = await sanityClient.fetch(`
+  *[_type == "camp"] | order(startDate desc) {
+    _id,
+    "year": academicYear->year,
+    location,
+    "dates": datesDisplay,
+    startDate,
+    endDate,
+    theme,
+    description,
+    highlights,
+    significance,
+    benefits[] {
+      title,
+      description
+    },
+    activities,
+    "carouselImages": carouselImages[].asset->url,
+    "impact": impactStories[] {
+      title,
+      description,
+      altText,
+      "imgSrc": image.asset->url
+    },
+    "tabs": {
+      "significance": significance,
+      "benefits": benefits,
+      "activities": activities
+    },
+    volunteersParticipated,
+    beneficiariesReached
+  }
+`);
+
+// Transform for backward compatibility with existing component
+const transformedCamps = (camps || []).map((camp: any) => ({
+  year: camp.year,
+  location: camp.location,
+  dates: camp.dates || (camp.startDate && camp.endDate
+    ? `${new Date(camp.startDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'long' })} - ${new Date(camp.endDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}`
+    : ''),
+  theme: camp.theme,
+  description: camp.description,
+  highlights: camp.highlights || [],
+  carouselImages: camp.carouselImages || [],
+  impact: camp.impact || [],
+  tabs: {
+    significance: camp.significance || '',
+    benefits: camp.benefits || [],
+    activities: camp.activities || []
+  },
+  volunteersParticipated: camp.volunteersParticipated,
+  beneficiariesReached: camp.beneficiariesReached
+}));
+---
+
+<BaseLayout
+  title="Special Camp"
+  description="Learn about NSS VIT's annual 7-day special camp - a transformative experience focused on community development and personal growth."
+>
+  <!-- Camp Display with proper margins -->
+  <div class="pb-24">
+    <CampDisplay client:load camps={transformedCamps} />
+  </div>
+</BaseLayout>

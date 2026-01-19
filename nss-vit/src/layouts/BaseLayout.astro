@@ -1,0 +1,128 @@
+---
+/**
+ * ╻ NSS-VIT
+ * ┃ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * ┃ Not Me, But You
+ * ┃
+ * ┃ BaseLayout.astro
+ * ╹ src/layouts/
+ */
+import { ViewTransitions } from 'astro:transitions';
+import { Navbar } from '../components/layout';
+import Footer from '../components/layout/Footer.astro';
+import '../styles/global.css';
+import { sanityClient } from 'sanity:client';
+
+// Fetch site config for logos and OG image
+const siteConfig = await sanityClient.fetch(`
+  *[_type == "siteConfig"][0] {
+    "nssLogo": nssLogo.asset->url,
+    "vitLogo": vitLogo.asset->url,
+    "ogImage": ogImage.asset->url
+  }
+`);
+
+// Fetch navigation from Sanity
+const navigation = await sanityClient.fetch(`
+  *[_type == "navigation"][0] {
+    mainNav[] {
+      "name": label,
+      href,
+      order,
+      isExternal,
+      isVisible
+    } | order(order asc)
+  }
+`);
+
+const nssLogo = siteConfig?.nssLogo || '/favicon.svg';
+const vitLogo = siteConfig?.vitLogo || '/favicon.svg';
+const defaultOgImage = siteConfig?.ogImage || '/favicon.svg';
+
+// Filter visible nav items and transform for Navbar component
+const navLinks = navigation?.mainNav
+  ?.filter((item: any) => item.isVisible !== false)
+  ?.map((item: any) => ({
+    name: item.name,
+    href: item.href,
+    isExternal: item.isExternal,
+  })) || [];
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  canonicalUrl?: string;
+}
+
+const {
+  title,
+  description = "NSS VIT Vidyalankar - Not Me But You. Join India's largest student youth volunteer organization.",
+  image = defaultOgImage,
+  canonicalUrl = Astro.url.href
+} = Astro.props;
+
+const siteTitle = title === "Home" ? "NSS VIT | Not Me But You" : `${title} | NSS VIT`;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary Meta Tags -->
+    <title>{siteTitle}</title>
+    <meta name="title" content={siteTitle} />
+    <meta name="description" content={description} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={siteTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <meta property="og:site_name" content="NSS VIT" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalUrl} />
+    <meta name="twitter:title" content={siteTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+    <meta name="twitter:domain" content="nssvit.in" />
+
+    <!-- Additional SEO -->
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="NSS VIT" />
+    <meta name="keywords" content="NSS, VIT, Vidyalankar, National Service Scheme, Mumbai, Volunteers, Community Service" />
+
+    <!-- View Transitions for smooth page navigation -->
+    <ViewTransitions />
+  </head>
+
+  <body class="bg-white text-text font-sans antialiased min-h-screen flex flex-col">
+    <!-- Navigation - Persist across page transitions, highest z-index -->
+    <div transition:persist="navbar" transition:name="navbar" class="relative z-[999]">
+      <Navbar client:load nssLogo={nssLogo} vitLogo={vitLogo} navLinks={navLinks} />
+    </div>
+
+    <!-- Spacer for fixed navbar -->
+    <div class="h-16 md:h-[72px] flex-shrink-0" aria-hidden="true"></div>
+
+    <!-- Main Content - Below navbar in stacking context -->
+    <main class="flex-1 relative" style="z-index: 1;">
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <Footer />
+  </body>
+</html>

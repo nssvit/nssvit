@@ -1,0 +1,111 @@
+---
+/**
+ * ╻ NSS-VIT
+ * ┃ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * ┃ Not Me, But You
+ * ┃
+ * ┃ gallery.astro
+ * ╹ src/pages/
+ */
+export const prerender = true;
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/shared/PageHeader.astro';
+import { GalleryGrid } from '../components/gallery';
+import { sanityClient } from 'sanity:client';
+
+// Load all gallery images
+const allImages = await sanityClient.fetch(`
+  *[_type == "galleryImage"] | order(dateTaken desc, order asc) {
+    _id,
+    "image": image.asset->url,
+    "alt": image.alt,
+    caption,
+    dateTaken,
+    tags,
+    photographer,
+    isFeatured,
+    order,
+    "year": academicYear->year,
+    "category": category->slug.current,
+    "categoryLabel": category->name,
+    "eventTitle": event->title
+  }
+`);
+
+// Load academic years
+const academicYears = await sanityClient.fetch(`
+  *[_type == "academicYear"] | order(year desc) {
+    _id,
+    year,
+    isCurrentYear
+  }
+`);
+
+// Load event categories for labels
+const categories = await sanityClient.fetch(`
+  *[_type == "eventCategory" && isActive == true] | order(order asc) {
+    _id,
+    name,
+    "id": slug.current
+  }
+`);
+
+// Transform data to match component expectations
+// Group images by year and category
+const transformedGalleries = academicYears.map((yearData: any) => {
+  const yearImages = allImages.filter((img: any) => img.year === yearData.year);
+
+  // Group by category
+  const sections: Record<string, { label: string; images: string[] }> = {};
+
+  categories.forEach((cat: any) => {
+    const categoryImages = yearImages
+      .filter((img: any) => img.category === cat.id)
+      .map((img: any) => img.image);
+
+    if (categoryImages.length > 0) {
+      sections[cat.id] = {
+        label: cat.name,
+        images: categoryImages
+      };
+    }
+  });
+
+  // Add uncategorized images
+  const uncategorizedImages = yearImages
+    .filter((img: any) => !img.category)
+    .map((img: any) => img.image);
+
+  if (uncategorizedImages.length > 0) {
+    sections['other'] = {
+      label: 'Other',
+      images: uncategorizedImages
+    };
+  }
+
+  return {
+    year: yearData.year,
+    sections
+  };
+}).filter((gallery: any) => Object.keys(gallery.sections).length > 0);
+
+// Total image count
+const totalImages = allImages.length;
+---
+
+<BaseLayout
+  title="Gallery"
+  description="Explore moments captured from NSS VIT events, camps, and community service activities across the years."
+>
+  <PageHeader
+    label="Photo Gallery"
+    title="CAPTURING MOMENTS OF SERVICE"
+    description={`Browse through our collection of ${totalImages}+ photographs from various events, camps, and community initiatives over the years.`}
+  />
+
+  <!-- Gallery Grid -->
+  <section class="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-10 pb-24">
+    <GalleryGrid client:load galleries={transformedGalleries} />
+  </section>
+</BaseLayout>

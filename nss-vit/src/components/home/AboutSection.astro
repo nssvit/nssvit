@@ -1,0 +1,102 @@
+---
+/**
+ * ╻ NSS-VIT
+ * ┃ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * ┃ Not Me, But You
+ * ┃
+ * ┃ AboutSection.astro
+ * ╹ src/components/home/
+ */
+import { sanityClient } from 'sanity:client';
+
+// Define types
+interface Benefit {
+  title: string;
+  description?: string;
+}
+
+interface AboutContent {
+  title?: string;
+  description?: string;
+  missionTitle?: string;
+  missionText?: string;
+  visionTitle?: string;
+  visionText?: string;
+  benefits?: Benefit[];
+}
+
+// Fetch about content from Sanity
+const aboutContent: AboutContent = await sanityClient.fetch(`
+  *[_type == "aboutContent"][0] {
+    title,
+    description,
+    missionTitle,
+    missionText,
+    visionTitle,
+    visionText,
+    benefits[] {
+      title,
+      description
+    }
+  }
+`) || {};
+
+// Fallback values
+const title = aboutContent?.title || 'WHAT IS NSS?';
+const description = aboutContent?.description ||
+  'The National Service Scheme is a Government of India initiative providing students opportunities for community service, leadership development, and social responsibility.';
+const missionTitle = aboutContent?.missionTitle || 'Mission';
+const missionText = aboutContent?.missionText ||
+  'Nurturing students through community service to develop responsibility and make a tangible difference.';
+const visionTitle = aboutContent?.visionTitle || 'Vision';
+const visionText = aboutContent?.visionText ||
+  'Empowering students for meaningful community engagement and developing compassionate future leaders.';
+const benefits: Benefit[] = aboutContent?.benefits?.length ? aboutContent.benefits : [
+  { title: 'Community service opportunities' },
+  { title: 'Leadership & teamwork skills' },
+  { title: 'Personal growth & awareness' },
+  { title: 'Networking with peers' },
+];
+---
+
+<section id="about" class="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-10 py-10 md:py-12 border-t border-swiss-gray-200 dark:border-swiss-gray-800">
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+    <div class="md:col-span-4">
+      <span class="text-label text-primary dark:text-secondary mb-2 block">About</span>
+      <h2 class="text-headline text-text dark:text-swiss-gray-50">{title}</h2>
+    </div>
+    <div class="md:col-span-8">
+      <p class="text-body text-swiss-gray-600 dark:text-swiss-gray-300 mb-6 max-w-xl">
+        {description}
+      </p>
+
+      <!-- Benefits -->
+      <div class="grid grid-cols-2 gap-3 mb-6">
+        {benefits.map((benefit) => (
+          <div class="flex items-start gap-2">
+            <div class="w-5 h-5 border border-primary dark:border-secondary flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary dark:text-secondary"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <p class="text-caption text-swiss-gray-600 dark:text-swiss-gray-300">{benefit.title}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Mission & Vision -->
+      <div class="grid grid-cols-2 gap-3">
+        <div class="border border-swiss-gray-200 dark:border-swiss-gray-700 dark:bg-swiss-gray-800/50 p-4 hover:border-primary dark:hover:border-secondary transition-colors">
+          <h4 class="text-caption font-semibold text-primary dark:text-secondary mb-2">{missionTitle}</h4>
+          <p class="text-caption text-swiss-gray-600 dark:text-swiss-gray-300 text-xs">
+            {missionText}
+          </p>
+        </div>
+        <div class="border border-swiss-gray-200 dark:border-swiss-gray-700 dark:bg-swiss-gray-800/50 p-4 hover:border-primary dark:hover:border-secondary transition-colors">
+          <h4 class="text-caption font-semibold text-primary dark:text-secondary mb-2">{visionTitle}</h4>
+          <p class="text-caption text-swiss-gray-600 dark:text-swiss-gray-300 text-xs">
+            {visionText}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

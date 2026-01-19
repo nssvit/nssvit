@@ -1,0 +1,361 @@
+/* === SWISS DESIGN TYPOGRAPHY SYSTEM === */
+/* Based on Swiss typography best practices: clean, minimal, functional */
+
+/* Import Inter - The Modern Grotesque Sans-Serif */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@import "tailwindcss";
+@config "../../tailwind.config.mjs";
+
+/* === CSS CUSTOM PROPERTIES === */
+@theme {
+  --font-sans: "Inter", "Helvetica Neue", "Arial", sans-serif;
+
+  /* Swiss Grid Unit (8px base) */
+  --grid-unit: 8px;
+
+  /* Border styles */
+  --border-light: 1px solid #E5E5E5;
+  --border-medium: 1px solid #D4D4D4;
+  --border-dark: 1px solid #171717;
+  --border-accent: 2px solid #4338CA;
+}
+
+/* === BASE STYLES === */
+html {
+  font-size: 16px; /* Base size - individual classes scaled for better hierarchy */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #FFFFFF;
+  color: #1E1B4B;
+  line-height: 1.5;
+}
+
+/* === SWISS TYPOGRAPHY HIERARCHY === */
+/* Swiss scale with better contrast: 12px, 15px, 17px, 22px, 36px, 48px */
+
+/* Display - Hero headlines (48px desktop, 32px mobile) */
+.text-display {
+  font-size: 3rem;
+  line-height: 1.05;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+/* Headline - Section headers (36px desktop, 26px mobile) */
+.text-headline {
+  font-size: 2.25rem;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Title - Card titles (22px desktop, 18px mobile) */
+.text-title {
+  font-size: 1.375rem;
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Body - Primary content (17px - optimal readability) */
+.text-body {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  font-weight: 400;
+}
+
+/* Caption - Supporting text (15px) */
+.text-caption {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+/* Label - Tags, badges (12px - uppercase with tracking) */
+.text-label {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* === SWISS DESIGN UTILITIES === */
+
+/* Swiss Container - Consistent max-width with generous side padding */
+.container-swiss {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;  /* 32px - 2% more than before */
+  padding-right: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .container-swiss {
+    padding-left: 2.5rem;  /* 40px on larger screens */
+    padding-right: 2.5rem;
+  }
+}
+
+/* Clean text selection */
+::selection {
+  background-color: #E0E7FF;
+  color: #1E1B4B;
+}
+
+/* Focus states - accessible but minimal */
+:focus-visible {
+  outline: 2px solid #4338CA;
+  outline-offset: 2px;
+}
+
+/* Smooth scrolling */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* === SWISS LINK STYLES === */
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #4338CA;
+}
+
+/* Underline style links */
+.link-underline {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.link-underline:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* === SWISS BUTTON BASE === */
+.btn-swiss {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-swiss-primary {
+  background-color: #4338CA;
+  color: #FFFFFF;
+  border-color: #4338CA;
+}
+
+.btn-swiss-primary:hover {
+  background-color: #3730A3;
+  border-color: #3730A3;
+}
+
+.btn-swiss-outline {
+  background-color: transparent;
+  color: #1E1B4B;
+  border-color: #1E1B4B;
+}
+
+.btn-swiss-outline:hover {
+  background-color: #1E1B4B;
+  color: #FFFFFF;
+}
+
+/* === SWISS CARD BASE === */
+.card-swiss {
+  background-color: #FFFFFF;
+  border: 1px solid #E5E5E5;
+  padding: 1.25rem;
+  transition: border-color 0.2s ease;
+}
+
+.card-swiss:hover {
+  border-color: #4338CA;
+}
+
+/* === MOBILE/TOUCH FIXES === */
+/* Remove grayscale on touch devices - hover doesn't work on touch screens */
+/* Using both max-width and hover:none for comprehensive coverage */
+@media (max-width: 768px), (hover: none) {
+  .grayscale,
+  .filter.grayscale,
+  img.grayscale,
+  [class*="grayscale"] {
+    filter: none !important;
+    -webkit-filter: none !important;
+  }
+
+  /* Ensure group-hover grayscale effects are also disabled */
+  .group:hover .grayscale,
+  .group:hover [class*="grayscale"] {
+    filter: none !important;
+  }
+}
+
+/* === RESPONSIVE TYPOGRAPHY === */
+@media (max-width: 768px) {
+  .text-display {
+    font-size: 2rem;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .text-headline {
+    font-size: 1.625rem;
+    line-height: 1.15;
+  }
+
+  .text-title {
+    font-size: 1.125rem;
+  }
+
+  .text-body {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .text-caption {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .text-label {
+    font-size: 0.6875rem;
+  }
+}
+
+/* === ANIMATION (Minimal, Purposeful) === */
+@media (prefers-reduced-motion: no-preference) {
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* === VIEW TRANSITIONS - Swiss Design (Minimal, Elegant) === */
+/* Subtle fade with minimal vertical movement - clean and functional */
+
+@keyframes swiss-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes swiss-fade-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* Root transition - affects entire page (fast & snappy) */
+::view-transition-old(root) {
+  animation: 100ms cubic-bezier(0.25, 0.1, 0.25, 1) both swiss-fade-out;
+}
+
+::view-transition-new(root) {
+  animation: 150ms cubic-bezier(0.25, 0.1, 0.25, 1) both swiss-fade-in;
+}
+
+/* Keep transitions snappy - no overlap delay */
+::view-transition-group(root) {
+  animation-duration: 150ms;
+}
+
+/* Persistent elements (navbar) - no animation */
+::view-transition-old(navbar),
+::view-transition-new(navbar) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* === LOADING SKELETON ANIMATION === */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* === MICRO-INTERACTIONS === */
+/* Smooth hover lift effect for cards */
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+}
+
+/* Focus ring for accessibility */
+.focus-ring:focus-visible {
+  outline: 2px solid #4338CA;
+  outline-offset: 2px;
+}
+
+/* Button press effect */
+.press-effect:active {
+  transform: scale(0.98);
+}
+
+/* === SCROLL BEHAVIOR === */
+html {
+  scroll-padding-top: 80px; /* Account for fixed navbar */
+}
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

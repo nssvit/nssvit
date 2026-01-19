@@ -1,0 +1,55 @@
+---
+/**
+ * ╻ NSS-VIT
+ * ┃ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * ┃ Not Me, But You
+ * ┃
+ * ┃ StatsSection.astro
+ * ╹ src/components/home/
+ */
+interface Stat {
+  value: string;
+  label: string;
+  icon?: string;
+}
+
+interface Props {
+  stats?: Stat[];
+}
+
+const { stats } = Astro.props;
+
+// Default stats if none provided
+// NSS VIT established in 1999 (VIT founded 1999)
+const defaultStats: Stat[] = [
+  { value: '25+', label: 'Years' },
+  { value: '100+', label: 'Volunteers' },
+  { value: '60+', label: 'Events' },
+  { value: '8K+', label: 'Lives Impacted' },
+];
+
+// Use provided stats or defaults
+const displayStats = stats?.length ? stats : defaultStats;
+
+// Ensure we always show "Years" stat first if it exists in the data
+// and fill up to 4 stats for consistent layout
+const finalStats = displayStats.slice(0, 4);
+
+// Add "Years" stat if not present and we have less than 4 stats
+if (finalStats.length < 4 && !finalStats.some(s => s.label.toLowerCase().includes('year'))) {
+  finalStats.unshift({ value: '25+', label: 'Years' });
+}
+---
+
+<section class="bg-text py-10 md:py-12">
+  <div class="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-10">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+      {finalStats.map((stat) => (
+        <div class="text-center p-4 md:p-0">
+          <span class="text-3xl md:text-display font-bold text-white">{stat.value}</span>
+          <p class="text-caption text-white/60 mt-1 text-xs md:text-sm">{stat.label}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

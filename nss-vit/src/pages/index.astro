@@ -1,0 +1,237 @@
+---
+/**
+ * ╻ NSS-VIT
+ * ┃ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * ┃ Not Me, But You
+ * ┃
+ * ┃ index.astro
+ * ╹ src/pages/
+ */
+export const prerender = true;
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Hero, ScrollProgress, AnnouncementBanner, UpcomingEvents } from '../components/home';
+import AboutSection from '../components/home/AboutSection.astro';
+import ValuesSection from '../components/home/ValuesSection.astro';
+import HighlightsBento from '../components/home/HighlightsBento.astro';
+import StatsSection from '../components/home/StatsSection.astro';
+import FAQSection from '../components/home/FAQSection.astro';
+import { sanityClient } from 'sanity:client';
+
+// Load homepage content from Sanity
+const homepageContent = await sanityClient.fetch(`
+  *[_type == "homepage"][0] {
+    heroTagline,
+    heroSubtext,
+    "heroImage": heroImage.asset->url,
+    heroCtaText,
+    heroCtaLink,
+    stats,
+    featuredAchievementText,
+    featuredAchievementDescription,
+    featuredAchievementLink,
+    "campPreviewImage": campPreviewImage.asset->url
+  }
+`);
+
+// Load site config for volunteer count fallback
+const siteConfig = await sanityClient.fetch(`
+  *[_type == "siteConfig"][0] {
+    "heroImage": heroImage.asset->url,
+    tagline
+  }
+`);
+
+// Load active announcements
+const announcements = await sanityClient.fetch(`
+  *[_type == "announcement" && publishDate <= now() && (expiryDate == null || expiryDate > now())] | order(isPinned desc, publishDate desc) {
+    _id,
+    title,
+    content,
+    type,
+    "image": image.asset->url,
+    link,
+    linkText,
+    publishDate,
+    expiryDate,
+    isPinned,
+    isDismissible
+  }
+`);
+
+// Load upcoming events
+const upcomingEvents = await sanityClient.fetch(`
+  *[_type == "event" && isUpcoming == true && eventDate > now()] | order(eventDate asc)[0...5] {
+    _id,
+    title,
+    "slug": slug.current,
+    eventDate,
+    location,
+    description,
+    registrationLink,
+    "coverImage": coverImage.asset->url,
+    "category": category->{name, "slug": slug.current}
+  }
+`);
+
+// Load FAQs
+const faqs = await sanityClient.fetch(`
+  *[_type == "faq" && isVisible == true] | order(category asc, order asc) {
+    _id,
+    question,
+    answer,
+    category
+  }
+`);
+
+// Load current year stats
+const currentYear = await sanityClient.fetch(`
+  *[_type == "academicYear" && isCurrentYear == true][0] {
+    year,
+    eventsCount,
+    beneficiariesReached
+  }
+`);
+
+// Get previous academic year
+const allYears = await sanityClient.fetch(`
+  *[_type == "academicYear"] | order(year desc) { year }
+`);
+const currentYearIndex = allYears.findIndex((y: any) => y.year === currentYear?.year);
+const previousYear = currentYearIndex >= 0 && currentYearIndex < allYears.length - 1
+  ? allYears[currentYearIndex + 1]?.year
+  : null;
+
+// Calculate actual volunteer count:
+// Current year volunteers + Previous year heads (non-faculty)
+const volunteerGroups = await sanityClient.fetch(`
+  *[_type == "volunteerGroup" && academicYear->year == $year] {
+    "count": count(members)
+  }
+`, { year: currentYear?.year });
+const currentYearVolunteers = volunteerGroups?.reduce((sum: number, g: any) => sum + (g.count || 0), 0) || 0;
+
+const previousYearHeads = previousYear ? await sanityClient.fetch(`
+  count(*[_type == "teamMember" && academicYear->year == $year && position->category != "faculty"])
+`, { year: previousYear }) : 0;
+
+const calculatedVolunteerCount = currentYearVolunteers + (previousYearHeads || 0);
+
+// Load camp preview (latest camp)
+const latestCamp = await sanityClient.fetch(`
+  *[_type == "camp"] | order(startDate desc)[0] {
+    _id,
+    title,
+    village,
+    duration,
+    "previewImage": carouselImages[0].asset->url,
+    "academicYear": academicYear->year
+  }
+`);
+
+// Load latest achievement for highlights
+const latestAchievementData = await sanityClient.fetch(`
+  *[_type == "achievement"] | order(_createdAt desc)[0] {
+    title,
+    institution,
+    "year": academicYear->year
+  }
+`);
+
+// Load gallery count
+const galleryCount = await sanityClient.fetch(`count(*[_type == "galleryImage"])`);
+
+// Load homepage highlights content (if exists)
+const highlightsContent = await sanityClient.fetch(`
+  *[_type == "homepage"][0] {
+    "highlightImage": highlightImage.asset->url,
+    "campHighlight": {
+      "title": highlightCampTitle,
+      "subtitle": highlightCampSubtitle,
+      "description": highlightCampDescription
+    },
+    "achievementHighlight": {
+      "title": highlightAchievementTitle,
+      "description": highlightAchievementDescription
+    },
+    "recognitionHighlight": {
+      "title": highlightRecognitionTitle,
+      "description": highlightRecognitionDescription
+    }
+  }
+`);
+
+// Fallback values
+const heroImage = homepageContent?.heroImage || siteConfig?.heroImage || '/hero-nss.png';
+const heroTagline = homepageContent?.heroTagline || 'NOT ME, BUT YOU';
+const heroSubtext = homepageContent?.heroSubtext || 'Fostering community service and leadership at Vidyalankar since 1999';
+// Use calculated count: current year volunteers + previous year heads
+const volunteerCount = calculatedVolunteerCount > 0 ? `${calculatedVolunteerCount}+` : '100+';
+const campPreviewImage = homepageContent?.campPreviewImage || latestCamp?.previewImage || '/hero-nss.png';
+const stats = homepageContent?.stats || [
+  { value: volunteerCount, label: 'Volunteers' },
+  { value: currentYear?.eventsCount ? `${currentYear.eventsCount}+` : '100+', label: 'Events' },
+  { value: currentYear?.beneficiariesReached ? `${currentYear.beneficiariesReached}+` : '10K+', label: 'Lives Impacted' },
+];
+
+// Featured content for Update block - prioritize latest announcement, fall back to homepage content
+const latestAnnouncement = announcements?.[0];
+const featuredAchievement = latestAnnouncement ? {
+  text: latestAnnouncement.title,
+  description: latestAnnouncement.content,
+  link: latestAnnouncement.link || '/events'
+} : homepageContent?.featuredAchievementText ? {
+  text: homepageContent.featuredAchievementText,
+  description: homepageContent.featuredAchievementDescription,
+  link: homepageContent.featuredAchievementLink || '/achievements'
+} : null;
+---
+
+<BaseLayout
+  title="NSS VIT | Not Me But You"
+  description="NSS VIT Vidyalankar - National Service Scheme unit fostering community service and leadership."
+>
+  <div>
+    <ScrollProgress client:load />
+
+    <Hero
+      client:load
+      heroImage={heroImage}
+      volunteerCount={volunteerCount}
+      heroTagline={heroTagline}
+      heroSubtext={heroSubtext}
+      featuredAchievement={featuredAchievement}
+    />
+
+    <AboutSection />
+    <ValuesSection />
+
+    {/* Upcoming Events Section */}
+    {upcomingEvents && upcomingEvents.length > 0 && (
+      <UpcomingEvents client:load events={upcomingEvents} maxEvents={3} />
+    )}
+
+    <HighlightsBento
+      campPreviewImage={campPreviewImage}
+      camp={{
+        title: highlightsContent?.campHighlight?.title || latestCamp?.title || 'Special Camp',
+        subtitle: highlightsContent?.campHighlight?.subtitle || `Camp ${latestCamp?.academicYear?.split('-')[0] || '2024'}`,
+        description: highlightsContent?.campHighlight?.description || (latestCamp?.village ? `${latestCamp.duration || '7'}-day camp at ${latestCamp.village}.` : '7-day camp at Kuderan Village.'),
+        image: highlightsContent?.highlightImage || campPreviewImage,
+        link: '/camp'
+      }}
+      achievement={{
+        title: highlightsContent?.achievementHighlight?.title || latestAchievementData?.title || 'Competition Wins',
+        description: highlightsContent?.achievementHighlight?.description || (latestAchievementData?.institution ? `At ${latestAchievementData.institution}` : 'Multiple 1st places in 2024-25.'),
+        link: '/achievements'
+      }}
+      recognition={{
+        title: highlightsContent?.recognitionHighlight?.title || 'Inter-College Excellence',
+        description: highlightsContent?.recognitionHighlight?.description || 'Remarkable success across Mumbai colleges.'
+      }}
+      galleryCount={galleryCount || 100}
+    />
+    <StatsSection stats={stats} />
+    <FAQSection faqs={faqs} />
+  </div>
+</BaseLayout>

@@ -1,0 +1,115 @@
+---
+/**
+ * ╻ NSS-VIT
+ * ┃ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * ┃ Not Me, But You
+ * ┃
+ * ┃ BentoCard.astro
+ * ╹ src/components/shared/
+ */
+interface Props {
+  title?: string;
+  label?: string;
+  colSpan?: string;
+  rowSpan?: string;
+  variant?: 'default' | 'accent' | 'dark' | 'muted';
+  href?: string;
+  class?: string;
+}
+
+const {
+  title,
+  label,
+  colSpan = "col-span-1",
+  rowSpan = "row-span-1",
+  variant = 'default',
+  href,
+  class: className
+} = Astro.props;
+
+// Swiss Design Variants - No shadows, border-focused
+const variants = {
+  default: 'bg-white border border-swiss-gray-200 hover:border-primary',
+  accent: 'bg-primary text-white border-2 border-primary',
+  dark: 'bg-text text-white border border-text',
+  muted: 'bg-swiss-gray-50 border border-swiss-gray-200 hover:border-swiss-gray-300',
+};
+
+const variantClass = variants[variant] || variants.default;
+
+// Determine if this is a link or static card
+const Tag = href ? 'a' : 'div';
+const linkProps = href ? { href } : {};
+---
+
+<Tag
+  {...linkProps}
+  class:list={[
+    // Base Swiss Card Styles
+    'relative overflow-hidden p-6 transition-all duration-200',
+    // Grid positioning
+    colSpan,
+    rowSpan,
+    // Variant styles
+    variantClass,
+    // Interactive states
+    href && 'cursor-pointer group',
+    // Custom classes
+    className,
+  ]}
+>
+  <div class="relative z-10 h-full flex flex-col">
+    {/* Label - Swiss uppercase style */}
+    {label && (
+      <span class:list={[
+        'text-label mb-3',
+        variant === 'default' && 'text-primary',
+        variant === 'accent' && 'text-white/80',
+        variant === 'dark' && 'text-white/70',
+        variant === 'muted' && 'text-swiss-gray-500',
+      ]}>
+        {label}
+      </span>
+    )}
+
+    {/* Title - Clean, bold typography */}
+    {title && (
+      <h3 class:list={[
+        'text-title tracking-tight',
+        variant === 'default' && 'text-text',
+        variant === 'accent' && 'text-white',
+        variant === 'dark' && 'text-white',
+        variant === 'muted' && 'text-text',
+      ]}>
+        {title}
+      </h3>
+    )}
+
+    {/* Content Slot */}
+    <div class:list={[
+      'mt-4 flex-1',
+      variant === 'default' && 'text-swiss-gray-600',
+      variant === 'accent' && 'text-white/90',
+      variant === 'dark' && 'text-white/80',
+      variant === 'muted' && 'text-swiss-gray-600',
+    ]}>
+      <slot />
+    </div>
+
+    {/* Arrow indicator for links (Swiss minimal) */}
+    {href && (
+      <div class:list={[
+        'absolute top-6 right-6 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1',
+        variant === 'default' && 'text-primary',
+        variant === 'accent' && 'text-white',
+        variant === 'dark' && 'text-white',
+        variant === 'muted' && 'text-swiss-gray-400',
+      ]}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 7h10v10"/>
+          <path d="M7 17 17 7"/>
+        </svg>
+      </div>
+    )}
+  </div>
+</Tag>
