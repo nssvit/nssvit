@@ -13,6 +13,7 @@ import { media } from 'sanity-plugin-media';
 import { visionTool } from '@sanity/vision';
 import { colorInput } from '@sanity/color-input';
 import { dashboardTool, projectInfoWidget, projectUsersWidget } from '@sanity/dashboard';
+import { documentListWidget } from 'sanity-plugin-dashboard-widget-document-list';
 import { schemaTypes } from './sanity/schemas';
 
 // NSS VIT Sanity Project
@@ -125,6 +126,41 @@ export default defineConfig({
 
         // Team members with access
         projectUsersWidget(),
+
+        // Recent Team updates
+        documentListWidget({
+          title: 'Recent Team Members',
+          types: ['teamMember'],
+          order: '_updatedAt desc',
+          limit: 5,
+          showCreateButton: true,
+        }),
+
+        // Recent Events
+        documentListWidget({
+          title: 'Recent Events',
+          types: ['event'],
+          order: '_updatedAt desc',
+          limit: 5,
+          showCreateButton: true,
+        }),
+
+        // Active Announcements
+        documentListWidget({
+          title: 'Recent Announcements',
+          types: ['announcement'],
+          order: '_updatedAt desc',
+          limit: 5,
+          showCreateButton: true,
+        }),
+
+        // Contact Submissions
+        documentListWidget({
+          title: 'New Contact Submissions',
+          types: ['contactSubmission'],
+          order: 'submittedAt desc',
+          limit: 5,
+        }),
       ],
     }),
   ],
