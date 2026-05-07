@@ -43,17 +43,46 @@ interface Props {
 }
 
 const positionOrder = [
-  // Faculty (always shown)
-  'Program Officer', 'Faculty Advisor',
+  // Faculty
+  'Program Officer',
+  'Faculty Advisor',
+
   // Leadership
-  'In-Charge', 'Lead', 'Co-Lead', 'Operational Lead',
+  'In-Charge',
+  'Lead',
+  'Joint Lead',
+  'Co-Lead',
+  'Operational Lead',
+
   // Heads
-  'Documentation Head', 'Creatives Head', 'Events Head', 'Technical Head',
-  'RRC Head', 'Publicity Head', 'Cultural Head', 'Social Media Head',
-  // Leads & Coordinators
-  'Documentation Lead', 'Creatives Lead', 'Events Lead',
-  'Publicity Lead', 'Publicity Co-ordinator', 'Publicity Coordinator',
-  'Cultural Lead', 'Social Media Lead', 'Social Media Co-ordinator',
+  'Documentation Head',
+  'Creatives Head',
+  'Events Head',
+  'Technical Head',
+  'Technical Lead',
+  'RRC Head',
+  'Publicity Head',
+  'Cultural Head',
+  'Social Media Head',
+
+  // Leads
+  'Documentation Lead',
+  'Creatives Lead',
+  'Events Lead',
+  'Media Lead',
+  'Cultural Lead',
+  'Camp Lead',
+
+  // Managers
+  'Creatives & Media Manager',
+
+  // Coordinators
+  'Coordinator',
+  'Publicity Lead',
+  'Publicity Co-ordinator',
+  'Publicity Coordinator',
+  'Social Media Lead',
+  'Social Media Co-ordinator',
 ];
 
 export default function TeamDisplay({ teams, volunteers }: Props) {
