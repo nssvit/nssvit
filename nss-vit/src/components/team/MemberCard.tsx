@@ -7,6 +7,8 @@
  * ╹ src/components/team/
  */
 
+import defaultProfileImg from '../../assets/images/Default-profile.svg';
+
 interface Props {
   name: string;
   position: string;
@@ -24,7 +26,7 @@ export default function MemberCard({
   email,
   linkedin
 }: Props) {
-  const displayImage = image || fallbackImage || '/favicon.svg';
+  const displayImage = image || fallbackImage || defaultProfileImg.src; // changed the fall back image to default profile
 
   return (
     <div className="border border-swiss-gray-200 hover:border-primary p-4 md:p-6 transition-colors group">

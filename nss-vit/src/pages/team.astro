@@ -13,6 +13,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/shared/PageHeader.astro';
 import { TeamDisplay } from '../components/team';
 import { sanityClient } from 'sanity:client';
+import { urlFor } from '../lib/sanity';
+import defaultProfileImg from '../assets/images/Default-profile.svg';
 
 // Load all academic years
 const allAcademicYears = await sanityClient.fetch(`
@@ -43,7 +45,7 @@ const allTeamMembers = await sanityClient.fetch(`
     "position": position->title,
     "positionCategory": position->category,
     "positionOrder": position->hierarchyOrder,
-    "photo": photo.asset->url,
+    "photo": photo,
     email,
     linkedin,
     order,
@@ -60,7 +62,7 @@ const allVolunteerGroups = await sanityClient.fetch(`
     description,
     members[] {
       name,
-      "photo": photo.asset->url,
+      "photo": photo,
       email
     },
     order,
@@ -95,7 +97,7 @@ const teamsByYear = academicYears.map((yearData: any) => {
       position: m.position,
       positionCategory: m.positionCategory,
       positionOrder: m.positionOrder,
-      image: m.photo,
+      image: m.photo ? urlFor(m.photo).width(400).height(400).fit('crop').url() : undefined,
       email: m.email,
       linkedin: m.linkedin,
       order: m.order,
@@ -117,7 +119,7 @@ const volunteersByYear = academicYears.map((yearData: any) => {
 }).filter((v: any) => v.groups.length > 0);
 
 // Fallback image for members without photos
-const fallbackImage = '/assets/img/team/user.webp';
+const fallbackImage = defaultProfileImg.src;
 ---
 
 <BaseLayout
