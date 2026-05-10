@@ -32,6 +32,11 @@ const footerContent = await sanityClient.fetch(`
       url,
       label
     },
+    contactTitle,
+    contactNumbers[] {
+      name,
+      phone
+    },
     copyrightText
   }
 `);
@@ -91,6 +96,8 @@ const address = contactInfo?.address?.city
 
 const aboutDescription = footerContent?.aboutDescription || 'Empowering youth through community service since 1999.';
 const copyrightText = footerContent?.copyrightText || `© ${currentYear} NSS VIT`;
+const contactTitle = footerContent?.contactTitle || 'Contact Our Operational Leads';
+const contactNumbers = footerContent?.contactNumbers || [];
 ---
 
 <footer class="border-t border-swiss-gray-200 bg-white">
@@ -99,7 +106,7 @@ const copyrightText = footerContent?.copyrightText || `© ${currentYear} NSS VIT
     <div class="grid grid-cols-2 md:grid-cols-12 gap-6 mb-6">
 
       <!-- Brand -->
-      <div class="col-span-2 md:col-span-4">
+      <div class="col-span-2 md:col-span-3">
         <div class="flex items-center gap-3 mb-3">
           <a href="https://www.nss.gov.in" target="_blank" rel="noopener noreferrer" class="h-8">
             <img src={nssLogo} alt="NSS" class="h-full w-auto" />
@@ -114,7 +121,7 @@ const copyrightText = footerContent?.copyrightText || `© ${currentYear} NSS VIT
       </div>
 
       <!-- Nav -->
-      <div class="col-span-1 md:col-span-2 md:col-start-6">
+      <div class="col-span-1 md:col-span-2">
         <span class="text-label text-swiss-gray-400 mb-3 block">Links</span>
         <ul class="space-y-1.5">
           {navLinks.slice(0, 3).map((link: { name: string; href: string }) => (
@@ -133,10 +140,29 @@ const copyrightText = footerContent?.copyrightText || `© ${currentYear} NSS VIT
       </div>
 
       <!-- Contact -->
-      <div class="col-span-1 md:col-span-2">
+      <div class="col-span-2 md:col-span-3">
         <span class="text-label text-swiss-gray-400 mb-3 block">Contact</span>
         <a href={`mailto:${email}`} class="text-caption text-swiss-gray-600 hover:text-primary transition-colors text-xs block mb-1">{email}</a>
-        <span class="text-caption text-swiss-gray-500 text-xs">{address}</span>
+        <span class="text-caption text-swiss-gray-500 text-xs block mb-4">{address}</span>
+        
+        {contactNumbers.length > 0 && (
+          <div>
+            <span class="text-label text-swiss-gray-400 mb-2 block">{contactTitle}</span>
+            <ul class="space-y-1.5">
+              {contactNumbers.map((contact: { name: string; phone: string }) => {
+                const shortName = contact.name ? contact.name.split('-')[0].trim() : '';
+                return (
+                  <li class="flex items-center gap-1.5">
+                    <a href={`tel:${contact.phone.replace(/\\s+/g, '')}`} class="text-caption text-swiss-gray-600 hover:text-primary transition-colors text-xs whitespace-nowrap">
+                      {contact.phone}
+                    </a>
+                    {shortName && <span class="text-caption text-swiss-gray-400 text-[10px]">({shortName})</span>}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
       </div>
 
       <!-- Social -->

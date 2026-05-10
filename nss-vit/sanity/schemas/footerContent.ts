@@ -38,6 +38,43 @@ export default defineType({
       description: 'Short description in footer',
     }),
 
+    // Contact Leads
+    defineField({
+      name: 'contactTitle',
+      title: 'Contact Title',
+      type: 'string',
+      group: 'about',
+      initialValue: 'Contact Our Operational Leads',
+    }),
+    defineField({
+      name: 'contactNumbers',
+      title: 'Contact Numbers',
+      type: 'array',
+      group: 'about',
+      of: [
+        {
+          type: 'object',
+          name: 'contact',
+          fields: [
+            {
+              name: 'name',
+              title: 'Name',
+              type: 'string',
+            },
+            {
+              name: 'phone',
+              title: 'Phone Number',
+              type: 'string',
+            },
+          ],
+          preview: {
+            select: { title: 'name', subtitle: 'phone' },
+          },
+        },
+      ],
+    }),
+
+
     // Quick Links
     defineField({
       name: 'quickLinksTitle',

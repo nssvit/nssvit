@@ -40,52 +40,63 @@ interface Volunteers {
 interface Props {
   teams: Team[];
   volunteers: Volunteers[];
+  fallbackImage?: string;
 }
+
+//change the order of the positions 
 
 const positionOrder = [
   // Faculty
   'Program Officer',
   'Faculty Advisor',
-
+  
   // Leadership
-  'In-Charge',
   'Lead',
+  'In-Charge',
   'Joint Lead',
   'Co-Lead',
   'Operational Lead',
 
-  // Heads
-  'Documentation Head',
-  'Creatives Head',
+  // Events
   'Events Head',
-  'Technical Head',
-  'Technical Lead',
-  'RRC Head',
-  'Publicity Head',
-  'Cultural Head',
-  'Social Media Head',
-
-  // Leads
-  'Documentation Lead',
-  'Creatives Lead',
   'Events Lead',
-  'Media Lead',
-  'Cultural Lead',
-  'Camp Lead',
 
-  // Managers
+  // Documentation
+  'Documentation Head',
+  'Documentation Lead',
+  
+  // Creatives
   'Creatives & Media Manager',
+  'Creatives Head',
+  'Creatives Lead',
 
-  // Coordinators
-  'Coordinator',
+  // Media / Publicity / Social
+  'Media Lead',
+  'Publicity Head',
   'Publicity Lead',
-  'Publicity Co-ordinator',
-  'Publicity Coordinator',
+  'Social Media Head',
   'Social Media Lead',
   'Social Media Co-ordinator',
+
+  // Cultural
+  'Cultural Head',
+  'Cultural Lead',
+
+  // Technical
+  'Technical Head',
+  'Technical Lead',
+
+  // Other Roles
+  'Camp Lead',
+  'Coordinator',
+  'RRC Head',
+  
+  'Publicity Co-ordinator',
+  'Publicity Coordinator',
+
 ];
 
-export default function TeamDisplay({ teams, volunteers }: Props) {
+export default function TeamDisplay({ teams, volunteers, fallbackImage }: Props) {
   const [selectedYear, setSelectedYear] = useState(teams[0]?.year || '');
 
   const currentTeam = teams.find(t => t.year === selectedYear);
@@ -117,7 +128,7 @@ export default function TeamDisplay({ teams, volunteers }: Props) {
             key={position}
             position={position}
             members={members}
-            fallbackImage={currentTeam?.fallbackImage}
+            fallbackImage={currentTeam?.fallbackImage || fallbackImage}
           />
         ))}
       </div>
