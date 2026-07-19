@@ -1,0 +1,38 @@
+---
+/**
+ * ╻ NSS-VIT
+ * ┃ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * ┃ Not Me, But You
+ * ┃
+ * ┃ activity-calendar.astro
+ * ╹ src/pages/
+ *
+ * Route: /activity-calendar
+ *
+ * Fetches all activityCalendarEntry docs for the current academic year
+ * from Sanity and renders the ActivityCalendarDashboard island.
+ * Mirrors how src/pages/events.astro fetches eventEntry data for EventsPage.
+ */
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+import ActivityCalendarDashboard from "../components/events/ActivityCalendarDashboard.tsx";
+import { queries } from "../lib/sanity";
+import { sanityClient } from 'sanity:client';
+
+// Change this to whichever year should be shown by default,
+// or read it from Astro.params if you want /activity-calendar/[year] routing.
+const ACADEMIC_YEAR = "2026-27";
+
+const entries = await sanityClient.fetch(
+  queries.activityCalendarEntries,
+);
+---
+
+<BaseLayout title="Activity Calendar | NSS VIT">
+  <ActivityCalendarDashboard
+    client:load
+    entries={entries}
+    academicYear={ACADEMIC_YEAR}
+  />
+</BaseLayout>

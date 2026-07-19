@@ -123,7 +123,7 @@ export default defineConfig({
                       ),
                   ])
               ),
-
+            S.documentTypeListItem('activityCalendar').title('Activity Calendar'),
             S.documentTypeListItem('camp').title('Special Camps'),
             S.documentTypeListItem('achievement').title('Achievements'),
             S.documentTypeListItem('galleryImage').title('Gallery'),

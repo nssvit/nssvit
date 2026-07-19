@@ -97,7 +97,7 @@ export default function EventCalendar({
         EVENT CALENDAR
       </div>
 
-      <aside className="border border-swiss-gray-200 rounded-sm p-4 bg-white shadow-sm lg:mt-0">
+      <aside className="border border-swiss-gray-200 p-4 bg-white shadow-sm lg:mt-0">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h3 className="text-sm font-semibold text-text">Calendar</h3>
@@ -233,4 +233,4 @@ export default function EventCalendar({
       </aside>
     </div>
   );
-}
+}

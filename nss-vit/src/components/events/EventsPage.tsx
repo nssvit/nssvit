@@ -904,7 +904,7 @@ export default function EventsPage({
 
       {/* ── Events Grid ───────────────────────────────────────────────────── */}
       <section className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-10 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-10 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[2fr_0.8fr] gap-10 items-start">
           {/* Left: Events Stack */}
           <div className="flex flex-col gap-10">
             {/* ── Upcoming Events ─────────────────────────────────────────── */}

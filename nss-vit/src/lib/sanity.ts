@@ -139,6 +139,25 @@ export interface Homepage extends SanityDocument {
   campPreviewImage?: SanityImage;
 }
 
+export interface ActivityCalendarEntry extends SanityDocument {
+  _type: 'activityCalendarEntry';
+  srNo: number;
+  activityDetails: string;
+  slug: { current: string };
+  academicYear: AcademicYear;
+  semester: 'odd' | 'even';
+  targetedAudience: string;
+  outcomeExpected: string;
+  facultyInCharge: string[];
+  weekOfMonth: string;
+  month: string;
+  year: number;
+  status: 'planned' | 'completed' | 'cancelled';
+  linkedEvent?: EventEntry;
+  order?: number;
+  isVisible: boolean;
+}
+
 export interface AboutContent extends SanityDocument {
   _type: 'aboutContent';
   title: string;
@@ -553,6 +572,22 @@ export const queries = {
     ...,
     category->
   }`,
+
+  activityCalendarEntries:`*[_type == "activityCalendar"] | order(year asc, srNo asc) {
+  _id,
+  srNo,
+  activityDetails,
+  "slug": slug.current,
+  semester,
+  academicYear,
+  targetedAudience,
+  outcomeExpected,
+  facultyInCharge,
+  weekOfMonth,
+  month,
+  year,
+  status
+}`,
 
   // ─── eventEntry ────────────────────────────────────────────────────────────
   // All queries for the new eventEntry document type are grouped here.

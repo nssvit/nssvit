@@ -29,6 +29,7 @@ import eventEntry from './eventEntry';
 import camp from './camp';
 import achievement from './achievement';
 import galleryImage from './galleryImage';
+import activityCalendar from './activityCalendar';
 
 // Dynamic Content Schemas
 import announcement from './announcement';
@@ -56,6 +57,7 @@ export const schemaTypes = [
   volunteerGroup,
   event,
   eventEntry,
+  activityCalendar,
   camp,
   achievement,
   galleryImage,
